@@ -1,0 +1,45 @@
+[package]
+categories = ["gui", "wasm", "web-programming"]
+description = "Template for starting a Yew project using Trunk"
+edition = "2021"
+keywords = ["yew", "trunk"]
+license = "MIT OR Apache-2.0"
+name = "exhibition_lp"
+readme = "README.md"
+version = "0.1.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dependencies]
+anyhow = {version = "1.0.69", features = ["backtrace"]}
+futures = {version = "0.3.26"}
+getrandom = {version = "0.2.8", features = ["js"]}
+log = "0.4.17"
+num-traits = "0.2.15"
+once_cell = "1.17.1"
+reqwasm = "0.5.0"
+serde = {version = "1.0.152", features = ["derive"]}
+serde_json = "1.0.93"
+wasm-bindgen = "0.2.84"
+wasm-bindgen-futures = "0.4.34"
+wasm-logger = "0.2"
+yew = {version = "0.20", features = ["csr"]}
+yew-hooks = "0.2.0"
+yew-router = "0.17.0"
+
+[dependencies.web-sys]
+features = [
+  "Headers",
+  "Request",
+  "RequestInit",
+  "RequestMode",
+  "RequestCredentials",
+  "Response",
+  "Window",
+  "Document",
+  "DomTokenList",
+  "Element",
+  "HtmlButtonElement",
+  "CssStyleDeclaration",
+  "CssRule",
+]
+version = "0.3.61"

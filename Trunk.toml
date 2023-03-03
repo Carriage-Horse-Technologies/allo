@@ -1,0 +1,16 @@
+[build]
+# The index HTML file to drive the bundling process.
+target = "index.html"
+# Build in release mode.
+release = false
+# The output dir for all final assets.
+dist = "dist"
+# The public URL from which assets are to be served.
+public_url = "/"
+
+[watch]
+watch = ["src/", "index.html", "index.scss"]
+
+[serve]
+address = "0.0.0.0"
+port = 8080

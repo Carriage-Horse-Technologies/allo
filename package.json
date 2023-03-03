@@ -1,0 +1,28 @@
+{
+  "name": "rust-yew-websocket",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "tw.build": "tailwindcss -o tailwind.css",
+    "tw.watch": "tailwindcss -o tailwind.css --watch",
+    "tw.release": "tailwindcss -o tailwind.css --minify",
+    "trunk.serve": "trunk serve",
+    "trunk.release": "trunk build --release",
+    "dev": "run-p tw.watch trunk.serve"
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5",
+    "npm-watch": "^0.11.0",
+    "tailwindcss": "^3.2.7"
+  },
+  "watch": {
+    "debug.build": {
+      "patterns": [
+        "src",
+        "index.html",
+        "Cargo.toml"
+      ],
+      "extensions": "rs"
+    }
+  }
+}
