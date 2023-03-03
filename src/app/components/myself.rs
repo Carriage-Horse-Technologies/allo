@@ -3,7 +3,7 @@ use web_sys::HtmlElement;
 use yew::prelude::*;
 use yew_hooks::use_bool_toggle;
 
-use crate::{my_utils::px_to_tws, settings::ICON_SIZE};
+use crate::my_utils::px_to_tws;
 
 #[derive(PartialEq, Properties)]
 pub(crate) struct MyselfProps {}
@@ -84,15 +84,15 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
     html! {
         <div ref={myself} onmousedown={onmousedown}
         class={classes!("fixed", "select-none",
-                &format!("-top-{}", px_to_tws(ICON_SIZE)), &format!("-left-{}", px_to_tws(ICON_SIZE)),
-                &format!("w-{}",ICON_SIZE), &format!("h-[{}px]",ICON_SIZE),
+                "-top-[32px]", "-left-[32px]",
+                "w-[64px]", "h-[64px]",
                 "rounded-full",
                 "transform-gpu", "translate-x-[50vw]", "translate-y-[50vh]",
                 "z-900", "ease-out", "duration-200",
                 "overflow-hidden"
         )}
             id="myself" >
-            <img src="https://avatars.githubusercontent.com/u/40430090?s=400&u=3833aeb5ec8671c98d415b620b5e6a65cfb0d6d2&v=4" width={ICON_SIZE.to_string()} alt="myself" />
+            <img src="https://avatars.githubusercontent.com/u/40430090?s=400&u=3833aeb5ec8671c98d415b620b5e6a65cfb0d6d2&v=4" width="64" alt="myself" />
         </div>
     }
 }

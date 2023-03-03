@@ -1,7 +1,7 @@
 use web_sys::HtmlElement;
 use yew::prelude::*;
 
-use crate::{app::models::Character, my_utils::px_to_tws, settings::ICON_SIZE};
+use crate::{app::models::Character, my_utils::px_to_tws};
 
 #[derive(PartialEq, Properties)]
 pub(crate) struct OtherCharacterProps {
@@ -31,14 +31,14 @@ pub(crate) fn OtherCharacter(props: &OtherCharacterProps) -> Html {
     html! {
         <div ref={character_node}
         class={classes!("fixed", "select-none",
-                &format!("-top-{}", px_to_tws(ICON_SIZE)), &format!("-left-{}", px_to_tws(ICON_SIZE)),
-                &format!("w-{}", px_to_tws(ICON_SIZE)), &format!("h-{}", px_to_tws(ICON_SIZE)),
+                "-top-[32px]", "-left-[32px]",
+                "w-[64px]", "h-[64px]",
                 "rounded-full",
                 "transform-gpu", "translate-x-[50vw]", "translate-y-[50vh]",
                 "z-800", "ease-character-move", "duration-700",
                 "overflow-hidden"
         )}>
-            <img src={character.url.clone()} width={ICON_SIZE.to_string()} alt={character.user_id.clone()} />
+            <img src={character.url.clone()} width="64" alt={character.user_id.clone()} />
         </div>
     }
 }

@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  lp:
+    container_name: lp
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: development
+    ports:
+      - "8080:8080"
+    working_dir: /app
+    tty: true

@@ -1,0 +1,11 @@
+.github/
+.vscode/
+dist/
+node_modules/
+target/
+.gitignore
+compose.yml
+Dockerfile
+LICENSE-APACHE
+LICENSE-MIT
+tailwind.css

@@ -8,7 +8,8 @@
     "tw.release": "tailwindcss -o tailwind.css --minify",
     "trunk.serve": "trunk serve",
     "trunk.release": "trunk build --release",
-    "dev": "run-p tw.watch trunk.serve",
+    "watch": "run-p tw.watch trunk.serve",
+    "dev": "run-s tw.build ttunk.serve",
     "release": "run-s tw.release trunk.release"
   },
   "devDependencies": {

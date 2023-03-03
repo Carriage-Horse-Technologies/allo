@@ -1,7 +1,5 @@
 use once_cell::sync::Lazy;
 
-pub(crate) const ICON_SIZE: u32 = 128;
-
 pub struct Config {
     pub(crate) location_provider_ws_url: &'static str,
     pub log_level: log::Level,
