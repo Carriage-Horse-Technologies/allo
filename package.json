@@ -9,7 +9,7 @@
     "trunk.serve": "trunk serve",
     "trunk.release": "trunk build --release",
     "watch": "run-p tw.watch trunk.serve",
-    "dev": "run-s tw.build ttunk.serve",
+    "dev": "run-s tw.build trunk.serve",
     "release": "run-s tw.release trunk.release"
   },
   "devDependencies": {

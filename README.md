@@ -18,11 +18,17 @@ cargo install trunk wasm-bindgen-cli
 yarn install
 ```
 
-### Running
-
 ```bash
 yarn dev
 ```
+
+#### Using docker compose
+
+```bash
+docker compose up -d --build
+```
+
+
 
 ### Release
 
