@@ -8,7 +8,12 @@ use yew_hooks::{
 
 use crate::{
     app::{
-        components::{myself::Myself, other_character::OtherCharacter},
+        components::{
+            enter_button::EnterButton,
+            myself::Myself,
+            other_character::OtherCharacter,
+            product::{Product, _ProductProps::title},
+        },
         models::{CharacterLocations, LocationType},
     },
     settings::CONFIG,
@@ -50,6 +55,7 @@ pub fn Home(props: &HomeProps) -> Html {
                         LocationType::UpdateCharacterPos => {
                             characters.set(received_chara_locations.characters);
                         }
+                        _ => (),
                     };
                 })),
                 onerror: Some(Box::new(|event| {
@@ -67,9 +73,13 @@ pub fn Home(props: &HomeProps) -> Html {
         )
     };
 
+    let product_title = "RED".to_string();
+    let url = "https://games.jyogi.net/".to_string();
+    let img_src = "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01GDGDQ2DYKE527HP55Z0R008H.png&w=1920&q=75".to_string();
+
     html! {
-        <div>
-            <Myself />
+        <div class="pt-[100px] w-[2000px] h-[1500px] dark:bg-dark-content-background">
+            <Myself ws={ws.ws.clone()} />
             <div>
                 {
                     for characters.current().iter().map(|chara| {
@@ -79,6 +89,14 @@ pub fn Home(props: &HomeProps) -> Html {
                     })
                 }
             </div>
+            {
+                for (0..4).into_iter().map(|_| {
+                    html! {
+                        <Product title={product_title.clone()} url={url.clone()} img_src={img_src.clone()} />
+                    }
+                })
+            }
+            <EnterButton />
         </div>
     }
 }

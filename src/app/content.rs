@@ -3,22 +3,15 @@ use crate::routes::Route;
 use yew::prelude::*;
 use yew_router::Switch;
 
-use super::page::home::Home;
+use super::{components::header::Header, page::home::Home};
 
 #[function_component]
 pub fn Content() -> Html {
-    let mousemove = {
-        Callback::from(move |e: MouseEvent| {
-            // log::info!("move! {},{}", e.client_x(), e.client_y());
-        })
-    };
-
     html!(
-        <div class={"light"}>
+        <div class={"dark"}>
             <div class={classes!("min-w-screen", "min-h-screen",
             "bg-light-background", "text-light-text",
-            "dark:bg-dark-background", "dark:text-dark-text")}
-            onmousemove={mousemove}>
+            "dark:bg-dark-background", "dark:text-dark-text")}>
                 <main>
                     <Switch<Route> render={switch} />
                 </main>
@@ -33,7 +26,8 @@ fn switch(routes: Route) -> Html {
             let fallback = html! {<div>{"Loading..."}</div>};
             html! {
                 <Suspense {fallback}>
-                 <Home />
+                    <Header />
+                    <Home />
                 </Suspense>
             }
         }

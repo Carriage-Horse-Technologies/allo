@@ -2,7 +2,7 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{html,rs}"],
+  content: ["./src/**/*.{html,rs}", "./dist/**/*.{html,js}"],
   theme: {
     screens: {
       'xs': '400px',
@@ -45,7 +45,8 @@ module.exports = {
         "light-button-bg-active": "#808080",
 
         // NOTE: 共通カラー
-        "link-text": "#31A0D3"
+        "link-text": "#31A0D3",
+        "enter-button": "#00ff55"
       },
       transitionTimingFunction: {
         "character-move": "cubic-bezier(.45,0,.82,.56)"

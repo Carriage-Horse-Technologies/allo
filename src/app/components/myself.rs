@@ -1,50 +1,54 @@
-use wasm_bindgen::{prelude::Closure, JsCast};
-use web_sys::HtmlElement;
-use yew::prelude::*;
-use yew_hooks::use_bool_toggle;
+use std::{cell::RefCell, rc::Rc};
 
-use crate::my_utils::px_to_tws;
+use wasm_bindgen::{prelude::Closure, JsCast};
+use web_sys::{HtmlElement, WebSocket};
+use yew::prelude::*;
+use yew_hooks::{use_bool_toggle, use_websocket, UseWebSocketHandle};
+
+use crate::{app::models::Character, my_utils::px_to_tws};
 
 #[derive(PartialEq, Properties)]
-pub(crate) struct MyselfProps {}
+pub(crate) struct MyselfProps {
+    pub(crate) ws: Rc<RefCell<Option<WebSocket>>>,
+}
 
 #[function_component]
 pub(crate) fn Myself(props: &MyselfProps) -> Html {
-    let MyselfProps {} = props;
+    let MyselfProps { ws } = props;
 
-    let pos = use_state(|| (0, 0));
     let myself = use_node_ref();
     let is_active = use_bool_toggle(false);
 
     {
-        let pos = pos.clone();
         let myself = myself.clone();
         let is_active = is_active.clone();
         use_effect_with_deps(
             |(myself, is_active)| {
                 let document = web_sys::window().unwrap().document().unwrap();
+
+                // マウス移動時
                 let mousemove_listener = Closure::<dyn Fn(MouseEvent)>::wrap(Box::new({
                     let myself = myself.clone();
                     let is_active = is_active.clone();
                     move |e| {
                         if *is_active {
-                            log::debug!("move! {},{}", e.client_x(), e.client_y());
-                            pos.set((e.client_x(), e.client_y()));
+                            log::debug!("move! {},{}", e.page_x(), e.page_y());
                             let div = myself.cast::<HtmlElement>().unwrap();
                             let style = div.style();
                             style
                                 .set_property(
                                     "transform",
-                                    &format!("translate({}px, {}px)", e.client_x(), e.client_y()),
+                                    &format!("translate({}px, {}px)", e.page_x(), e.page_y()),
                                 )
                                 .unwrap();
                         }
                     }
                 }));
 
+                // マウスボタンが離された時
                 let mouseup_listener = Closure::<dyn Fn(MouseEvent)>::wrap(Box::new({
                     let is_active = is_active.clone();
-                    move |_| {
+                    move |e| {
                         log::debug!("on disactive");
                         is_active.set(false);
                     }
@@ -73,17 +77,35 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
         );
     }
 
+    // Iconが押された時
     let onmousedown = {
         let is_active = is_active.clone();
-        Callback::from(move |_| {
+        let ws = ws.clone();
+        Callback::from(move |event: MouseEvent| {
             log::debug!("on active");
             is_active.set(true);
+            let my_pos = Character {
+                pos_x: event.page_x() as f64,
+                pos_y: event.page_y() as f64,
+                ..Default::default()
+            };
+            if let Err(e) = ws
+                .borrow()
+                .as_ref()
+                .unwrap()
+                .send_with_str(&serde_json::to_string(&my_pos).unwrap())
+            {
+                log::error!(
+                    "Failed to WebSocket send error. {}",
+                    e.as_string().unwrap_or_default()
+                );
+            }
         })
     };
 
     html! {
         <div ref={myself} onmousedown={onmousedown}
-        class={classes!("fixed", "select-none",
+        class={classes!("absolute", "select-none",
                 "-top-[32px]", "-left-[32px]",
                 "w-[64px]", "h-[64px]",
                 "rounded-full",
@@ -92,7 +114,7 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                 "overflow-hidden"
         )}
             id="myself" >
-            <img src="https://avatars.githubusercontent.com/u/40430090?s=400&u=3833aeb5ec8671c98d415b620b5e6a65cfb0d6d2&v=4" width="64" alt="myself" />
+            <img src="https://avatars.githubusercontent.com/u/40430090?s=400&u=3833aeb5ec8671c98d415b620b5e6a65cfb0d6d2&v=4" width=64 alt="myself" />
         </div>
     }
 }

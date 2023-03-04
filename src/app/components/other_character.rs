@@ -30,7 +30,7 @@ pub(crate) fn OtherCharacter(props: &OtherCharacterProps) -> Html {
 
     html! {
         <div ref={character_node}
-        class={classes!("fixed", "select-none",
+        class={classes!("absolute", "select-none",
                 "-top-[32px]", "-left-[32px]",
                 "w-[64px]", "h-[64px]",
                 "rounded-full",
@@ -38,7 +38,7 @@ pub(crate) fn OtherCharacter(props: &OtherCharacterProps) -> Html {
                 "z-800", "ease-character-move", "duration-700",
                 "overflow-hidden"
         )}>
-            <img src={character.url.clone()} width="64" alt={character.user_id.clone()} />
+            <img src={character.url.clone()} width=64 alt={character.user_id.clone()} />
         </div>
     }
 }
