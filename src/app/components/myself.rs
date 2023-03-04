@@ -10,41 +10,45 @@ use crate::{app::models::Character, my_utils::px_to_tws};
 #[derive(PartialEq, Properties)]
 pub(crate) struct MyselfProps {
     pub(crate) ws: Rc<RefCell<Option<WebSocket>>>,
-    // pub(crate) myself_rect: UseStateHandle<Option<DomRect>>,
+    pub(crate) myself_rect: UseStateHandle<Option<DomRect>>,
 }
 
 #[function_component]
 pub(crate) fn Myself(props: &MyselfProps) -> Html {
-    let MyselfProps { ws } = props;
+    let MyselfProps { ws, myself_rect } = props;
 
     let my_character_node_ref = use_node_ref();
     let is_active = use_bool_toggle(false);
-    // let myself_rect = use_state(|| Option::<DomRect>::None);
 
     {
         let my_character_node_ref = my_character_node_ref.clone();
         let is_active = is_active.clone();
-        // let myself_rect = myself_rect.clone();
+        let myself_rect = myself_rect.clone();
 
         use_effect_with_deps(
-            |(my_character_node_ref, is_active)| {
+            move |(my_character_node_ref, is_active)| {
                 let document = web_sys::window().unwrap().document().unwrap();
 
                 // マウス移動時
                 let mousemove_listener = Closure::<dyn Fn(MouseEvent)>::wrap(Box::new({
                     let my_character_node_ref = my_character_node_ref.clone();
+                    let myself_rect = myself_rect.clone();
                     let is_active = is_active.clone();
                     move |e| {
                         if *is_active {
                             log::debug!("move! {},{}", e.page_x(), e.page_y());
-                            let div = my_character_node_ref.cast::<HtmlElement>().unwrap();
-                            let style = div.style();
+                            let element = my_character_node_ref.cast::<HtmlElement>().unwrap();
+                            let style = element.style();
                             style
                                 .set_property(
                                     "transform",
                                     &format!("translate({}px, {}px)", e.page_x(), e.page_y()),
                                 )
                                 .unwrap();
+
+                            // 自キャラの短形取得
+                            let rect = element.get_bounding_client_rect();
+                            myself_rect.set(Some(rect));
                         }
                     }
                 }));
@@ -57,13 +61,6 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                         is_active.set(false);
                     }
                 }));
-
-                // 自キャラの短形取得
-                // let my_character_node = my_character_node_ref.clone();
-                // let myself_rect = myself_rect.clone();
-                // let node = my_character_node.cast::<HtmlElement>().unwrap();
-                // let rect = node.get_bounding_client_rect();
-                // myself_rect.set(Some(rect.clone()));
 
                 let register_listener = move || {
                     document

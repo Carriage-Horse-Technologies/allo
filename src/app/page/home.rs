@@ -11,10 +11,8 @@ use yew_hooks::{
 use crate::{
     app::{
         components::{
-            enter_button::EnterButton,
-            myself::Myself,
-            other_character::OtherCharacter,
-            product::{Product, _ProductProps::title},
+            enter_button::EnterButton, myself::Myself, other_character::OtherCharacter,
+            product::Product, product_list::ProductList,
         },
         models::{CharacterLocations, LocationType},
     },
@@ -29,6 +27,8 @@ pub fn Home(props: &HomeProps) -> Html {
     let HomeProps {} = props;
 
     let other_characters = use_list(vec![]);
+
+    let myself_rect = use_state(|| Option::<DomRect>::None);
 
     // WebSocket設定
     let ws = {
@@ -83,7 +83,7 @@ pub fn Home(props: &HomeProps) -> Html {
 
     html! {
         <div class="pt-[100px] w-[2000px] h-[1500px] dark:bg-dark-content-background">
-            <Myself ws={ws.ws.clone()} />
+            <Myself ws={ws.ws.clone()} myself_rect={myself_rect.clone()} />
             <div>
                 {
                     for other_characters.current().iter().map(|chara| {
@@ -93,13 +93,7 @@ pub fn Home(props: &HomeProps) -> Html {
                     })
                 }
             </div>
-            {
-                for (0..4).into_iter().map(|_| {
-                    html! {
-                        <Product title={product_title.clone()} url={url.clone()} img_src={img_src.clone()} />
-                    }
-                })
-            }
+            <ProductList myself_rect={(*myself_rect).clone()} />
             <EnterButton />
         </div>
     }

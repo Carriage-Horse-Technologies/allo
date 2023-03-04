@@ -2,6 +2,7 @@ pub(crate) mod components;
 pub(crate) mod content;
 pub(crate) mod models;
 pub(crate) mod page;
+pub(crate) mod states;
 
 use futures::{SinkExt, StreamExt};
 use reqwasm::websocket::{futures::WebSocket, Message};

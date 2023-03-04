@@ -38,3 +38,10 @@ pub(crate) struct MyLocation {
     pub(crate) pos_y: f64,
     pub(crate) user_id: String,
 }
+
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+pub(crate) struct ProductInfo {
+    pub(crate) title: &'static str,
+    pub(crate) url: &'static str,
+    pub(crate) img_src: &'static str,
+}
