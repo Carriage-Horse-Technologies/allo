@@ -1,7 +1,7 @@
 use std::{cell::RefCell, rc::Rc};
 
 use wasm_bindgen::{prelude::Closure, JsCast};
-use web_sys::{HtmlElement, WebSocket};
+use web_sys::{DomRect, HtmlElement, WebSocket};
 use yew::prelude::*;
 use yew_hooks::{use_bool_toggle, use_websocket, UseWebSocketHandle};
 
@@ -10,30 +10,34 @@ use crate::{app::models::Character, my_utils::px_to_tws};
 #[derive(PartialEq, Properties)]
 pub(crate) struct MyselfProps {
     pub(crate) ws: Rc<RefCell<Option<WebSocket>>>,
+    // pub(crate) myself_rect: UseStateHandle<Option<DomRect>>,
 }
 
 #[function_component]
 pub(crate) fn Myself(props: &MyselfProps) -> Html {
     let MyselfProps { ws } = props;
 
-    let myself = use_node_ref();
+    let my_character_node_ref = use_node_ref();
     let is_active = use_bool_toggle(false);
+    // let myself_rect = use_state(|| Option::<DomRect>::None);
 
     {
-        let myself = myself.clone();
+        let my_character_node_ref = my_character_node_ref.clone();
         let is_active = is_active.clone();
+        // let myself_rect = myself_rect.clone();
+
         use_effect_with_deps(
-            |(myself, is_active)| {
+            |(my_character_node_ref, is_active)| {
                 let document = web_sys::window().unwrap().document().unwrap();
 
                 // マウス移動時
                 let mousemove_listener = Closure::<dyn Fn(MouseEvent)>::wrap(Box::new({
-                    let myself = myself.clone();
+                    let my_character_node_ref = my_character_node_ref.clone();
                     let is_active = is_active.clone();
                     move |e| {
                         if *is_active {
                             log::debug!("move! {},{}", e.page_x(), e.page_y());
-                            let div = myself.cast::<HtmlElement>().unwrap();
+                            let div = my_character_node_ref.cast::<HtmlElement>().unwrap();
                             let style = div.style();
                             style
                                 .set_property(
@@ -54,6 +58,13 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                     }
                 }));
 
+                // 自キャラの短形取得
+                // let my_character_node = my_character_node_ref.clone();
+                // let myself_rect = myself_rect.clone();
+                // let node = my_character_node.cast::<HtmlElement>().unwrap();
+                // let rect = node.get_bounding_client_rect();
+                // myself_rect.set(Some(rect.clone()));
+
                 let register_listener = move || {
                     document
                         .add_event_listener_with_callback(
@@ -73,9 +84,11 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
 
                 register_listener
             },
-            (myself, is_active),
+            (my_character_node_ref, is_active),
         );
     }
+
+    {}
 
     // Iconが押された時
     let onmousedown = {
@@ -104,7 +117,7 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
     };
 
     html! {
-        <div ref={myself} onmousedown={onmousedown}
+        <div ref={my_character_node_ref} onmousedown={onmousedown}
         class={classes!("absolute", "select-none",
                 "-top-[32px]", "-left-[32px]",
                 "w-[64px]", "h-[64px]",

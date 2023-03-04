@@ -1,8 +1,10 @@
+use std::borrow::Borrow;
+
 use wasm_bindgen::{prelude::Closure, JsCast};
-use web_sys::{window, Document, HtmlElement};
+use web_sys::{window, Document, DomRect, HtmlElement};
 use yew::prelude::*;
 use yew_hooks::{
-    use_bool_toggle, use_list, use_websocket_with_options, UseWebSocketOptions,
+    use_bool_toggle, use_list, use_set, use_websocket_with_options, UseWebSocketOptions,
     UseWebSocketReadyState,
 };
 
@@ -26,9 +28,11 @@ pub struct HomeProps {}
 pub fn Home(props: &HomeProps) -> Html {
     let HomeProps {} = props;
 
-    let characters = use_list(vec![]);
+    let other_characters = use_list(vec![]);
+
+    // WebSocket設定
     let ws = {
-        let characters = characters.clone();
+        let other_characters = other_characters.clone();
         use_websocket_with_options(
             CONFIG.location_provider_ws_url.to_string(),
             UseWebSocketOptions {
@@ -53,7 +57,7 @@ pub fn Home(props: &HomeProps) -> Html {
                     }
                     match received_chara_locations.action {
                         LocationType::UpdateCharacterPos => {
-                            characters.set(received_chara_locations.characters);
+                            other_characters.set(received_chara_locations.characters);
                         }
                         _ => (),
                     };
@@ -82,7 +86,7 @@ pub fn Home(props: &HomeProps) -> Html {
             <Myself ws={ws.ws.clone()} />
             <div>
                 {
-                    for characters.current().iter().map(|chara| {
+                    for other_characters.current().iter().map(|chara| {
                         html! {
                             <OtherCharacter character={chara.clone()} />
                         }

@@ -36,6 +36,7 @@ features = [
   "Response",
   "Window",
   "Document",
+  "DomRect",
   "DomTokenList",
   "Element",
   "HtmlButtonElement",
