@@ -1,5 +1,7 @@
 use web_sys::DomRect;
 
+use crate::app::models::PageOffsetDomRect;
+
 pub(crate) fn px_to_tws(px: u32) -> u32 {
     px / 4
 }
@@ -12,6 +14,16 @@ fn check_collision(
 }
 
 pub(crate) fn check_collision_with_dom_rect(dom_a: &DomRect, dom_b: &DomRect) -> bool {
+    check_collision(
+        (dom_a.top(), dom_a.bottom(), dom_a.left(), dom_a.right()),
+        (dom_b.top(), dom_b.bottom(), dom_b.left(), dom_b.right()),
+    )
+}
+
+pub(crate) fn check_collision_with_page_offset_dom_rect(
+    dom_a: &PageOffsetDomRect,
+    dom_b: &PageOffsetDomRect,
+) -> bool {
     check_collision(
         (dom_a.top(), dom_a.bottom(), dom_a.left(), dom_a.right()),
         (dom_b.top(), dom_b.bottom(), dom_b.left(), dom_b.right()),

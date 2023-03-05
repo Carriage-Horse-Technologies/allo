@@ -6,8 +6,12 @@ use yew_hooks::{use_map, UseMapHandle};
 use yewdux::prelude::use_store;
 
 use crate::{
-    app::{components::product::Product, models::ProductInfo, states::CollisionState},
-    my_utils::check_collision_with_dom_rect,
+    app::{
+        components::product::Product,
+        models::{PageOffsetDomRect, ProductInfo},
+        states::CollisionState,
+    },
+    my_utils::{check_collision_with_dom_rect, check_collision_with_page_offset_dom_rect},
 };
 
 const PRODUCT_INFO_LIST: [ProductInfo; 4] = [ProductInfo {
@@ -34,14 +38,14 @@ ProductInfo {
 
 #[derive(PartialEq, Properties)]
 pub(crate) struct ProductListProps {
-    pub(crate) myself_rect: Option<DomRect>,
+    pub(crate) myself_rect: Option<PageOffsetDomRect>,
 }
 
 #[function_component]
 pub(crate) fn ProductList(props: &ProductListProps) -> Html {
     let ProductListProps { myself_rect } = props;
 
-    let products_rect_map: UseMapHandle<String, DomRect> = use_map(HashMap::new());
+    let products_rect_map: UseMapHandle<String, PageOffsetDomRect> = use_map(HashMap::new());
     let (_collision_state, collision_state_dispatch) = use_store::<CollisionState>();
 
     {
@@ -68,7 +72,7 @@ pub(crate) fn ProductList(props: &ProductListProps) -> Html {
                             prod_rect.left(),
                             prod_rect.right()
                         );
-                        if check_collision_with_dom_rect(myself_rect, prod_rect) {
+                        if check_collision_with_page_offset_dom_rect(myself_rect, prod_rect) {
                             on_collision_stay = CollisionState {
                                 on_collision_stay: true,
                                 url: PRODUCT_INFO_LIST
