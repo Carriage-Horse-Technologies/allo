@@ -5,12 +5,15 @@ use web_sys::{DomRect, HtmlElement, WebSocket};
 use yew::prelude::*;
 use yew_hooks::{use_bool_toggle, use_websocket, UseWebSocketHandle};
 
-use crate::{app::models::Character, my_utils::px_to_tws};
+use crate::{
+    app::models::{Character, PageOffsetDomRect},
+    my_utils::px_to_tws,
+};
 
 #[derive(PartialEq, Properties)]
 pub(crate) struct MyselfProps {
     pub(crate) ws: Rc<RefCell<Option<WebSocket>>>,
-    pub(crate) myself_rect: UseStateHandle<Option<DomRect>>,
+    pub(crate) myself_rect: UseStateHandle<Option<PageOffsetDomRect>>,
 }
 
 #[function_component]
@@ -46,9 +49,33 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                                 )
                                 .unwrap();
 
+                            let win = web_sys::window().unwrap();
+                            log::debug!(
+                                "win-page {} {}",
+                                win.page_x_offset().unwrap(),
+                                win.page_y_offset().unwrap()
+                            );
                             // 自キャラの短形取得
                             let rect = element.get_bounding_client_rect();
-                            myself_rect.set(Some(rect));
+                            log::debug!(
+                                "myself-rect top:{} bottom{} left{} right{} x{} y{}",
+                                rect.top(),
+                                rect.bottom(),
+                                rect.left(),
+                                rect.right(),
+                                rect.x(),
+                                rect.y()
+                            );
+                            let page_offset_dom_rect =
+                                PageOffsetDomRect::from_dom_rect_and_page_offset(
+                                    rect,
+                                    (
+                                        win.page_x_offset().unwrap_or_default(),
+                                        win.page_y_offset().unwrap_or_default(),
+                                    ),
+                                );
+                            log::debug!("page_offset_dom_rect {:#?}", page_offset_dom_rect);
+                            myself_rect.set(Some(page_offset_dom_rect));
                         }
                     }
                 }));

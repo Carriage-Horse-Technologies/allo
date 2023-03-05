@@ -14,7 +14,7 @@ use crate::{
             enter_button::EnterButton, myself::Myself, other_character::OtherCharacter,
             product::Product, product_list::ProductList,
         },
-        models::{CharacterLocations, LocationType},
+        models::{CharacterLocations, LocationType, PageOffsetDomRect},
     },
     settings::CONFIG,
 };
@@ -28,7 +28,7 @@ pub fn Home(props: &HomeProps) -> Html {
 
     let other_characters = use_list(vec![]);
 
-    let myself_rect = use_state(|| Option::<DomRect>::None);
+    let myself_rect = use_state(|| Option::<PageOffsetDomRect>::None);
 
     // WebSocket設定
     let ws = {
@@ -44,17 +44,17 @@ pub fn Home(props: &HomeProps) -> Html {
                     let mut received_chara_locations =
                         serde_json::from_str::<CharacterLocations>(&message).unwrap();
                     // debug用にランダムで移動させる
-                    if cfg!(debug_assertions) {
-                        let mut pos_x = vec![0, 0];
-                        let mut pos_y = vec![0, 0];
-                        getrandom::getrandom(&mut pos_x).unwrap();
-                        getrandom::getrandom(&mut pos_y).unwrap();
-                        log::debug!("rand x: {:?}; y: {:?}", pos_x, pos_y);
-                        for i in 0..(pos_x.len()) {
-                            received_chara_locations.characters[i].pos_x = pos_x[i] as f64 * 6.;
-                            received_chara_locations.characters[i].pos_y = pos_y[i] as f64 * 3.;
-                        }
-                    }
+                    // if cfg!(debug_assertions) {
+                    //     let mut pos_x = vec![0, 0];
+                    //     let mut pos_y = vec![0, 0];
+                    //     getrandom::getrandom(&mut pos_x).unwrap();
+                    //     getrandom::getrandom(&mut pos_y).unwrap();
+                    //     log::debug!("rand x: {:?}; y: {:?}", pos_x, pos_y);
+                    //     for i in 0..(pos_x.len()) {
+                    //         received_chara_locations.characters[i].pos_x = pos_x[i] as f64 * 6.;
+                    //         received_chara_locations.characters[i].pos_y = pos_y[i] as f64 * 3.;
+                    //     }
+                    // }
                     match received_chara_locations.action {
                         LocationType::UpdateCharacterPos => {
                             other_characters.set(received_chara_locations.characters);
