@@ -48,6 +48,13 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
 
                             // 自キャラの短形取得
                             let rect = element.get_bounding_client_rect();
+                            log::debug!(
+                                "myself-rect {} {} {} {}",
+                                rect.top(),
+                                rect.bottom(),
+                                rect.left(),
+                                rect.right()
+                            );
                             myself_rect.set(Some(rect));
                         }
                     }

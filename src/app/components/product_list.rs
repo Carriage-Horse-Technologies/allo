@@ -53,6 +53,21 @@ pub(crate) fn ProductList(props: &ProductListProps) -> Html {
                 if let Some(myself_rect) = myself_rect {
                     let mut on_collision_stay = CollisionState::default();
                     for (title, prod_rect) in products_rect_map.current().iter() {
+                        log::debug!(
+                            "rect my {} {} {} {}",
+                            myself_rect.top(),
+                            myself_rect.bottom(),
+                            myself_rect.left(),
+                            myself_rect.right()
+                        );
+                        log::debug!(
+                            "rect {} {} {} {} {}",
+                            title,
+                            prod_rect.top(),
+                            prod_rect.bottom(),
+                            prod_rect.left(),
+                            prod_rect.right()
+                        );
                         if check_collision_with_dom_rect(myself_rect, prod_rect) {
                             on_collision_stay = CollisionState {
                                 on_collision_stay: true,
@@ -63,6 +78,7 @@ pub(crate) fn ProductList(props: &ProductListProps) -> Html {
                                     .url
                                     .to_string(),
                             };
+                            log::debug!("hit! {}", title);
                         }
                     }
                     // 何も接触していなかったらfalse(default)でreduce．
