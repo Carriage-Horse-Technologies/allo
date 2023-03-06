@@ -89,6 +89,20 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                     }
                 }));
 
+                let keydown_listener = Closure::<dyn Fn(KeyboardEvent)>::wrap(Box::new({
+                    let is_active = is_active.clone();
+                    |e| {
+                        let key_code = e.code();
+                        match key_code.as_str() {
+                            "ArrowLeft" | "KeyA" => log::debug!("左"),
+                            "ArrowRight" | "KeyD" => log::debug!("右"),
+                            "ArrowUp" | "KeyW" => log::debug!("上"),
+                            "ArrowDown" | "KeyS" => log::debug!("下"),
+                            _ => (),
+                        }
+                    }
+                }));
+
                 let register_listener = move || {
                     document
                         .add_event_listener_with_callback(
@@ -101,6 +115,13 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                         .add_event_listener_with_callback(
                             "mouseup",
                             mouseup_listener.as_ref().unchecked_ref(),
+                        )
+                        .unwrap();
+
+                    document
+                        .add_event_listener_with_callback(
+                            "keydown",
+                            keydown_listener.as_ref().unchecked_ref(),
                         )
                         .unwrap();
                 };
