@@ -1,4 +1,5 @@
 use once_cell::sync::Lazy;
+use uuid::Uuid;
 
 pub struct Config {
     pub(crate) location_provider_ws_url: &'static str,
@@ -7,7 +8,7 @@ pub struct Config {
 
 pub static CONFIG: Lazy<Config> = Lazy::new(|| Config {
     location_provider_ws_url: if cfg!(debug_assertions) {
-        "ws://localhost/ws/example-user-id"
+        "ws://localhost/ws"
     } else {
         ""
     },
@@ -17,3 +18,5 @@ pub static CONFIG: Lazy<Config> = Lazy::new(|| Config {
         log::Level::Info
     },
 });
+
+pub static USER_ID: Lazy<String> = Lazy::new(|| Uuid::new_v4().to_string());

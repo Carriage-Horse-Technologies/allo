@@ -1,13 +1,15 @@
-use std::{cell::RefCell, rc::Rc};
+use std::{borrow::Borrow, cell::RefCell, rc::Rc};
 
+use futures::SinkExt;
 use wasm_bindgen::{prelude::Closure, JsCast};
 use web_sys::{DomRect, HtmlElement, WebSocket};
 use yew::prelude::*;
 use yew_hooks::{use_bool_toggle, use_websocket, UseWebSocketHandle};
 
 use crate::{
-    app::models::{Character, PageOffsetDomRect},
+    app::models::{Character, LocationType, MyLocation, PageOffsetDomRect},
     my_utils::px_to_tws,
+    settings,
 };
 
 #[derive(PartialEq, Properties)]
@@ -27,6 +29,7 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
         let my_character_node_ref = my_character_node_ref.clone();
         let is_active = is_active.clone();
         let myself_rect = myself_rect.clone();
+        let ws = ws.clone();
 
         use_effect_with_deps(
             move |(my_character_node_ref, is_active)| {
@@ -83,9 +86,33 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                 // マウスボタンが離された時
                 let mouseup_listener = Closure::<dyn Fn(MouseEvent)>::wrap(Box::new({
                     let is_active = is_active.clone();
+                    let myself_rect = myself_rect.clone();
+                    let ws = ws.clone();
                     move |e| {
                         log::debug!("on disactive");
                         is_active.set(false);
+                        if let Some(myself_rect) = (*myself_rect).clone() {
+                            let my_pos = MyLocation {
+                                action: LocationType::UpdateCharacterPos,
+                                user_id: settings::USER_ID.to_string(),
+                                pos_x: myself_rect.left(),
+                                pos_y: myself_rect.top(),
+                            };
+                            // let s = (*ws).send(&serde_json::to_string(&my_pos).unwrap());
+                            if let Err(send_result) = (*ws)
+                                .borrow()
+                                .clone()
+                                .unwrap()
+                                .send_with_str(&serde_json::to_string(&my_pos).unwrap())
+                            {
+                                log::error!(
+                                    "Failed to Websocket send error. {}",
+                                    send_result.as_string().unwrap_or_default()
+                                );
+                            } else {
+                                log::debug!("Success websocket send");
+                            }
+                        }
                     }
                 }));
 
@@ -121,22 +148,6 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
         Callback::from(move |event: MouseEvent| {
             log::debug!("on active");
             is_active.set(true);
-            let my_pos = Character {
-                pos_x: event.page_x() as f64,
-                pos_y: event.page_y() as f64,
-                ..Default::default()
-            };
-            if let Err(e) = ws
-                .borrow()
-                .as_ref()
-                .unwrap()
-                .send_with_str(&serde_json::to_string(&my_pos).unwrap())
-            {
-                log::error!(
-                    "Failed to WebSocket send error. {}",
-                    e.as_string().unwrap_or_default()
-                );
-            }
         })
     };
 

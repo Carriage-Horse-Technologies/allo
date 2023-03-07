@@ -16,7 +16,7 @@ use crate::{
         },
         models::{CharacterLocations, LocationType, PageOffsetDomRect},
     },
-    settings::CONFIG,
+    settings::{self, CONFIG},
 };
 
 #[derive(PartialEq, Properties)]
@@ -29,20 +29,26 @@ pub fn Home(props: &HomeProps) -> Html {
     let other_characters = use_list(vec![]);
 
     let myself_rect = use_state(|| Option::<PageOffsetDomRect>::None);
-
     // WebSocket設定
     let ws = {
         let other_characters = other_characters.clone();
         use_websocket_with_options(
-            CONFIG.location_provider_ws_url.to_string(),
+            format!(
+                "{}/{}",
+                CONFIG.location_provider_ws_url.to_string(),
+                *settings::USER_ID
+            ),
             UseWebSocketOptions {
                 onopen: Some(Box::new(|event| {
                     log::info!("ws connected time_stamp: {}", event.time_stamp());
                 })),
                 onmessage: Some(Box::new(move |message| {
                     log::debug!("[receive] {:#?}", message);
-                    let mut received_chara_locations =
-                        serde_json::from_str::<CharacterLocations>(&message).unwrap();
+                    let  Ok(received_chara_locations) =
+                        serde_json::from_str::<CharacterLocations>(&message) else {
+                        log::warn!("Failed to json parse.");
+                        return;
+                        };
                     // debug用にランダムで移動させる
                     // if cfg!(debug_assertions) {
                     //     let mut pos_x = vec![0, 0];

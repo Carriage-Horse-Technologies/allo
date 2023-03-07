@@ -13,6 +13,7 @@ pub(crate) struct CharacterLocations {
 pub(crate) enum LocationType {
     UpdateCharacterPos,
     UpdateMyPos,
+    UpdateCharacterPosExample,
 }
 
 impl Default for LocationType {
