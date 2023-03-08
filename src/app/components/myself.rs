@@ -1,15 +1,17 @@
-use std::{borrow::Borrow, cell::RefCell, rc::Rc};
+use std::{borrow::Borrow, cell::RefCell, collections::HashMap, rc::Rc};
 
 use futures::SinkExt;
 use wasm_bindgen::{prelude::Closure, JsCast};
 use web_sys::{DomRect, HtmlElement, WebSocket};
 use yew::prelude::*;
 use yew_hooks::{use_bool_toggle, use_interval, use_timeout, use_websocket, UseWebSocketHandle};
+use yewdux::prelude::{use_store, use_store_value};
 
 use crate::{
     app::{
         components::balloon::Balloon,
         models::{Character, LocationType, MyLocation, PageOffsetDomRect},
+        states::{ChatTextHashState, ChatTextState},
     },
     my_utils::px_to_tws,
     settings,
@@ -29,7 +31,13 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
 
     let my_character_node_ref = use_node_ref();
     let balloon_node_ref = use_node_ref();
+    let is_display_balloon = use_bool_toggle(false);
+    let balloon_timeout = {
+        let is_display_balloon = is_display_balloon.clone();
+        use_timeout(move || is_display_balloon.set(false), 5000)
+    };
     let is_active = use_bool_toggle(false);
+    let chat_text_hash = use_store_value::<ChatTextHashState>();
 
     {
         let my_character_node_ref = my_character_node_ref.clone();
@@ -159,6 +167,14 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
         })
     };
 
+    let ChatTextState {
+        message,
+        is_display_balloon,
+    } = chat_text_hash
+        .get(settings::USER_ID.as_str())
+        .map(|c| c.clone())
+        .unwrap_or_default();
+
     html! {
         <div>
             <div ref={my_character_node_ref} onmousedown={onmousedown}
@@ -173,9 +189,9 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                 id="myself" >
                 <img src="https://avatars.githubusercontent.com/u/40430090?s=400&u=3833aeb5ec8671c98d415b620b5e6a65cfb0d6d2&v=4" width=64 alt="myself" />
             </div>
-            <Balloon node_ref={balloon_node_ref}>
+            <Balloon node_ref={balloon_node_ref} is_display_balloon={is_display_balloon}>
             {
-                "テキスト"
+                message
             }
             </Balloon>
         </div>
