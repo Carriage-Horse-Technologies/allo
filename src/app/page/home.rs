@@ -11,8 +11,8 @@ use yew_hooks::{
 use crate::{
     app::{
         components::{
-            enter_button::EnterButton, myself::Myself, other_character::OtherCharacter,
-            product::Product, product_list::ProductList,
+            chat_text_field::ChatTextField, enter_button::EnterButton, myself::Myself,
+            other_character::OtherCharacter, product::Product, product_list::ProductList,
         },
         models::{CharacterLocations, LocationType, PageOffsetDomRect},
     },
@@ -101,6 +101,7 @@ pub fn Home(props: &HomeProps) -> Html {
             </div>
             <ProductList myself_rect={(*myself_rect).clone()} />
             <EnterButton />
+            <ChatTextField />
         </div>
     }
 }

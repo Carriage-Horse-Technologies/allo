@@ -4,13 +4,18 @@ use futures::SinkExt;
 use wasm_bindgen::{prelude::Closure, JsCast};
 use web_sys::{DomRect, HtmlElement, WebSocket};
 use yew::prelude::*;
-use yew_hooks::{use_bool_toggle, use_websocket, UseWebSocketHandle};
+use yew_hooks::{use_bool_toggle, use_interval, use_timeout, use_websocket, UseWebSocketHandle};
 
 use crate::{
-    app::models::{Character, LocationType, MyLocation, PageOffsetDomRect},
+    app::{
+        components::balloon::Balloon,
+        models::{Character, LocationType, MyLocation, PageOffsetDomRect},
+    },
     my_utils::px_to_tws,
     settings,
 };
+
+use super::move_node;
 
 #[derive(PartialEq, Properties)]
 pub(crate) struct MyselfProps {
@@ -23,10 +28,12 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
     let MyselfProps { ws, myself_rect } = props;
 
     let my_character_node_ref = use_node_ref();
+    let balloon_node_ref = use_node_ref();
     let is_active = use_bool_toggle(false);
 
     {
         let my_character_node_ref = my_character_node_ref.clone();
+        let balloon_node_ref = balloon_node_ref.clone();
         let is_active = is_active.clone();
         let myself_rect = myself_rect.clone();
         let ws = ws.clone();
@@ -38,19 +45,19 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                 // マウス移動時
                 let mousemove_listener = Closure::<dyn Fn(MouseEvent)>::wrap(Box::new({
                     let my_character_node_ref = my_character_node_ref.clone();
+                    let balloon_node_ref = balloon_node_ref.clone();
                     let myself_rect = myself_rect.clone();
                     let is_active = is_active.clone();
                     move |e| {
                         if *is_active {
                             log::debug!("move! {},{}", e.page_x(), e.page_y());
-                            let element = my_character_node_ref.cast::<HtmlElement>().unwrap();
-                            let style = element.style();
-                            style
-                                .set_property(
-                                    "transform",
-                                    &format!("translate({}px, {}px)", e.page_x(), e.page_y()),
-                                )
-                                .unwrap();
+
+                            // myself Nodeの移動
+                            move_node(&my_character_node_ref, e.page_x(), e.page_y())
+                                .expect("Failed to my_character_node_ref move_node");
+                            // 吹き出しNodeの移動
+                            move_node(&balloon_node_ref, e.page_x(), e.page_y())
+                                .expect("Failed to balloon_node_ref move_node");
 
                             let win = web_sys::window().unwrap();
                             log::debug!(
@@ -59,6 +66,7 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                                 win.page_y_offset().unwrap()
                             );
                             // 自キャラの短形取得
+                            let element = my_character_node_ref.cast::<HtmlElement>().unwrap();
                             let rect = element.get_bounding_client_rect();
                             log::debug!(
                                 "myself-rect top:{} bottom{} left{} right{} x{} y{}",
@@ -152,17 +160,24 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
     };
 
     html! {
-        <div ref={my_character_node_ref} onmousedown={onmousedown}
-        class={classes!("absolute", "select-none",
-                "-top-[32px]", "-left-[32px]",
-                "w-[64px]", "h-[64px]",
-                "rounded-full",
-                "transform-gpu", "translate-x-[50vw]", "translate-y-[50vh]",
-                "z-900", "ease-out", "duration-200",
-                "overflow-hidden"
-        )}
-            id="myself" >
-            <img src="https://avatars.githubusercontent.com/u/40430090?s=400&u=3833aeb5ec8671c98d415b620b5e6a65cfb0d6d2&v=4" width=64 alt="myself" />
+        <div>
+            <div ref={my_character_node_ref} onmousedown={onmousedown}
+            class={classes!("absolute", "select-none",
+                    "-top-[32px]", "-left-[32px]",
+                    "w-[64px]", "h-[64px]",
+                    "rounded-full",
+                    "transform-gpu", "translate-x-[50vw]", "translate-y-[50vh]",
+                    "z-900", "ease-out", "duration-200",
+                    "overflow-hidden"
+            )}
+                id="myself" >
+                <img src="https://avatars.githubusercontent.com/u/40430090?s=400&u=3833aeb5ec8671c98d415b620b5e6a65cfb0d6d2&v=4" width=64 alt="myself" />
+            </div>
+            <Balloon node_ref={balloon_node_ref}>
+            {
+                "テキスト"
+            }
+            </Balloon>
         </div>
     }
 }

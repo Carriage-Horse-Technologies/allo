@@ -40,8 +40,10 @@ features = [
   "Document",
   "DomRect",
   "DomTokenList",
+  "EventTarget",
   "Element",
   "HtmlButtonElement",
+  "HtmlTextAreaElement",
   "CssStyleDeclaration",
   "CssRule",
 ]
