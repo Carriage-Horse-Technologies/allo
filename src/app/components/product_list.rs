@@ -58,14 +58,14 @@ pub(crate) fn ProductList(props: &ProductListProps) -> Html {
                     let mut on_collision_stay = CollisionState::default();
                     for (title, prod_rect) in products_rect_map.current().iter() {
                         log::debug!(
-                            "rect my {} {} {} {}",
+                            "rect-my {} {} {} {}",
                             myself_rect.top(),
                             myself_rect.bottom(),
                             myself_rect.left(),
                             myself_rect.right()
                         );
                         log::debug!(
-                            "rect {} {} {} {} {}",
+                            "rect-prod {} {} {} {} {}",
                             title,
                             prod_rect.top(),
                             prod_rect.bottom(),
@@ -94,7 +94,7 @@ pub(crate) fn ProductList(props: &ProductListProps) -> Html {
     }
 
     html! {
-        <div>
+        <div class={classes!("grid", "grid-cols-4")}>
             {
                 for PRODUCT_INFO_LIST.iter().map(|info| {
                     html! {

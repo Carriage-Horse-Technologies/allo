@@ -79,7 +79,7 @@ pub(crate) fn Product(props: &ProductProps) -> Html {
     };
 
     html! {
-        <div ref={node} class="w-fit h-fit">
+        <div ref={node} class="w-fit h-fit m-10">
             <a href={product_info.url.clone()} target="_blank" rel="noopener noreferrer"
                 class="flex max-w-[512px]">
                 <figure class="h-fit">
