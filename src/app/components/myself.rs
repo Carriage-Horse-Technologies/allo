@@ -61,10 +61,10 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                             log::debug!("move! {},{}", e.page_x(), e.page_y());
 
                             // myself Nodeの移動
-                            move_node(&my_character_node_ref, e.page_x(), e.page_y())
+                            move_node(&my_character_node_ref, &e.page_x(), &e.page_y())
                                 .expect("Failed to my_character_node_ref move_node");
                             // 吹き出しNodeの移動
-                            move_node(&balloon_node_ref, e.page_x(), e.page_y())
+                            move_node(&balloon_node_ref, &e.page_x(), &e.page_y())
                                 .expect("Failed to balloon_node_ref move_node");
 
                             let win = web_sys::window().unwrap();
@@ -183,13 +183,13 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                     "w-[64px]", "h-[64px]",
                     "rounded-full",
                     "transform-gpu", "translate-x-[50vw]", "translate-y-[50vh]",
-                    "z-900", "ease-out", "duration-200",
+                    "z-[900]", "ease-out", "duration-200",
                     "overflow-hidden"
             )}
                 id="myself" >
                 <img src="https://avatars.githubusercontent.com/u/40430090?s=400&u=3833aeb5ec8671c98d415b620b5e6a65cfb0d6d2&v=4" width=64 alt="myself" />
             </div>
-            <Balloon node_ref={balloon_node_ref} is_display_balloon={is_display_balloon}>
+            <Balloon node_ref={balloon_node_ref} is_display_balloon={is_display_balloon} is_myself={true}>
             {
                 message
             }

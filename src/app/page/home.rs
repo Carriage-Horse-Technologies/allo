@@ -4,9 +4,10 @@ use wasm_bindgen::{prelude::Closure, JsCast};
 use web_sys::{window, Document, DomRect, HtmlElement};
 use yew::prelude::*;
 use yew_hooks::{
-    use_bool_toggle, use_list, use_set, use_websocket_with_options, UseWebSocketOptions,
-    UseWebSocketReadyState,
+    use_bool_toggle, use_interval, use_list, use_set, use_websocket_with_options,
+    UseWebSocketOptions, UseWebSocketReadyState,
 };
+use yewdux::prelude::use_store;
 
 use crate::{
     app::{
@@ -15,6 +16,7 @@ use crate::{
             other_character::OtherCharacter, product::Product, product_list::ProductList,
         },
         models::{CharacterLocations, LocationType, PageOffsetDomRect},
+        states::{ChatTextHashState, ChatTextState},
     },
     settings::{self, CONFIG},
 };
@@ -27,11 +29,13 @@ pub fn Home(props: &HomeProps) -> Html {
     let HomeProps {} = props;
 
     let other_characters = use_list(vec![]);
+    let (_, chat_text_hash_dispatch) = use_store::<ChatTextHashState>();
 
     let myself_rect = use_state(|| Option::<PageOffsetDomRect>::None);
     // WebSocket設定
     let ws = {
         let other_characters = other_characters.clone();
+        let chat_text_hash_dispatch = chat_text_hash_dispatch.clone();
         use_websocket_with_options(
             format!(
                 "{}/{}",
@@ -63,7 +67,22 @@ pub fn Home(props: &HomeProps) -> Html {
                     }
                     match received_chara_locations.action {
                         LocationType::UpdateCharacterPosExample => {
-                            other_characters.set(received_chara_locations.characters);
+                            other_characters.set(received_chara_locations.characters.clone());
+
+                            // debug用
+                            {
+                                for chara in received_chara_locations.characters {
+                                    chat_text_hash_dispatch.reduce_mut(|state| {
+                                        state.hash.insert(
+                                            chara.user_id,
+                                            ChatTextState {
+                                                message: "test message".to_string(),
+                                                is_display_balloon: true,
+                                            },
+                                        )
+                                    });
+                                }
+                            }
                         }
                         _ => (),
                     };
