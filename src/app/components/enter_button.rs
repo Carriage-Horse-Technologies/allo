@@ -1,5 +1,5 @@
 use yew::prelude::*;
-use yew_hooks::use_update;
+
 use yewdux::prelude::use_store_value;
 
 use crate::app::states::CollisionState;
@@ -18,7 +18,7 @@ pub(crate) fn EnterButton(props: &EnterButtonProps) -> Html {
 
     let onclick = {
         let href = href.clone().unwrap_or_default();
-        let disabled = disabled.clone().unwrap_or_else(|| true);
+        let disabled = (*disabled).unwrap_or(true);
         let collision_state = collision_state.clone();
         Callback::from(move |_| {
             // タグを内包してしまっていることが原因でdisabledでも発火してしまうのでこっちで抑制

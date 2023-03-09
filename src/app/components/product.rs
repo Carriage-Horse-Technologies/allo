@@ -1,10 +1,9 @@
-use web_sys::{DomRect, HtmlElement};
+use web_sys::{HtmlElement};
 use yew::prelude::*;
 use yew_hooks::UseMapHandle;
 
 use crate::{
     app::models::{PageOffsetDomRect, ProductInfo},
-    my_utils::check_collision_with_dom_rect,
 };
 
 #[derive(PartialEq, Properties)]

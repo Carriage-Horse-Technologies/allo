@@ -1,11 +1,11 @@
-use std::borrow::Borrow;
 
-use wasm_bindgen::{prelude::Closure, JsCast};
-use web_sys::{window, Document, DomRect, HtmlElement};
+
+
+
 use yew::prelude::*;
 use yew_hooks::{
-    use_bool_toggle, use_interval, use_list, use_set, use_websocket_with_options,
-    UseWebSocketOptions, UseWebSocketReadyState,
+    use_list, use_websocket_with_options,
+    UseWebSocketOptions,
 };
 use yewdux::prelude::use_store;
 
@@ -13,7 +13,7 @@ use crate::{
     app::{
         components::{
             chat_text_field::ChatTextField, enter_button::EnterButton, myself::Myself,
-            other_character::OtherCharacter, product::Product, product_list::ProductList,
+            other_character::OtherCharacter, product_list::ProductList,
         },
         models::{CharacterLocations, LocationType, PageOffsetDomRect},
         states::{ChatTextHashState, ChatTextState},
@@ -35,11 +35,11 @@ pub fn Home(props: &HomeProps) -> Html {
     // WebSocket設定
     let ws = {
         let other_characters = other_characters.clone();
-        let chat_text_hash_dispatch = chat_text_hash_dispatch.clone();
+        let chat_text_hash_dispatch = chat_text_hash_dispatch;
         use_websocket_with_options(
             format!(
                 "{}/{}",
-                CONFIG.location_provider_ws_url.to_string(),
+                CONFIG.location_provider_ws_url,
                 *settings::USER_ID
             ),
             UseWebSocketOptions {
@@ -102,9 +102,9 @@ pub fn Home(props: &HomeProps) -> Html {
         )
     };
 
-    let product_title = "RED".to_string();
-    let url = "https://games.jyogi.net/".to_string();
-    let img_src = "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01GDGDQ2DYKE527HP55Z0R008H.png&w=1920&q=75".to_string();
+    let _product_title = "RED".to_string();
+    let _url = "https://games.jyogi.net/".to_string();
+    let _img_src = "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01GDGDQ2DYKE527HP55Z0R008H.png&w=1920&q=75".to_string();
 
     html! {
         <div class="pt-[100px] w-[2000px] h-[1500px] dark:bg-dark-content-background">

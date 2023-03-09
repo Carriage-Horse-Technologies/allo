@@ -1,19 +1,18 @@
-use std::{borrow::Borrow, cell::RefCell, collections::HashMap, rc::Rc};
+use std::{borrow::Borrow, cell::RefCell, rc::Rc};
 
-use futures::SinkExt;
+
 use wasm_bindgen::{prelude::Closure, JsCast};
-use web_sys::{DomRect, HtmlElement, WebSocket};
+use web_sys::{HtmlElement, WebSocket};
 use yew::prelude::*;
-use yew_hooks::{use_bool_toggle, use_interval, use_timeout, use_websocket, UseWebSocketHandle};
-use yewdux::prelude::{use_store, use_store_value};
+use yew_hooks::{use_bool_toggle};
+use yewdux::prelude::{use_store_value};
 
 use crate::{
     app::{
         components::balloon::Balloon,
-        models::{Character, LocationType, MyLocation, PageOffsetDomRect},
+        models::{LocationType, MyLocation, PageOffsetDomRect},
         states::{ChatTextHashState, ChatTextState},
     },
-    my_utils::px_to_tws,
     settings,
 };
 
@@ -98,8 +97,8 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                 let mouseup_listener = Closure::<dyn Fn(MouseEvent)>::wrap(Box::new({
                     let is_active = is_active.clone();
                     let myself_rect = myself_rect.clone();
-                    let ws = ws.clone();
-                    move |e| {
+                    let ws = ws;
+                    move |_e| {
                         log::debug!("on disactive");
                         is_active.set(false);
                         if let Some(myself_rect) = (*myself_rect).clone() {
@@ -154,9 +153,9 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
 
     // Iconが押された時
     let onmousedown = {
-        let is_active = is_active.clone();
-        let ws = ws.clone();
-        Callback::from(move |event: MouseEvent| {
+        let is_active = is_active;
+        let _ws = ws.clone();
+        Callback::from(move |_event: MouseEvent| {
             log::debug!("on active");
             is_active.set(true);
         })
@@ -166,8 +165,7 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
         message,
         is_display_balloon,
     } = chat_text_hash
-        .get(settings::USER_ID.as_str())
-        .map(|c| c.clone())
+        .get(settings::USER_ID.as_str()).cloned()
         .unwrap_or_default();
 
     html! {

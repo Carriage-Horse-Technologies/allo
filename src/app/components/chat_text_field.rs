@@ -1,9 +1,9 @@
-use std::rc::Rc;
+
 
 use web_sys::HtmlTextAreaElement;
-use yew::{prelude::*, virtual_dom::Key};
+use yew::{prelude::*};
 use yew_hooks::use_timeout;
-use yewdux::prelude::{use_store, use_store_value};
+use yewdux::prelude::{use_store};
 
 use crate::{
     app::states::{ChatTextHashState, ChatTextState},
@@ -38,8 +38,8 @@ pub(crate) fn ChatTextField(props: &ChatTextFieldProps) -> Html {
 
     let onkeypress = {
         let node = node.clone();
-        let chat_text_dispatch = chat_text_dispatch.clone();
-        let balloon_timeout = balloon_timeout.clone();
+        let chat_text_dispatch = chat_text_dispatch;
+        let balloon_timeout = balloon_timeout;
         Callback::from(move |e: KeyboardEvent| {
             log::debug!(
                 "keypress ctrl: {}; enter: {} {} {}",
