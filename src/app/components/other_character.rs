@@ -25,18 +25,31 @@ pub(crate) fn OtherCharacter(props: &OtherCharacterProps) -> Html {
     let character_node = use_node_ref();
     let balloon_node_ref = use_node_ref();
     let (chat_text_hash, chat_text_hash_dispatch) = use_store::<ChatTextHashState>();
-
-    use_effect({
+    {
         let character = character.clone();
         let character_node = character_node.clone();
         let balloon_node_ref = balloon_node_ref.clone();
-        move || {
-            move_node(&character_node, &character.pos_x, &character.pos_y)
-                .expect("Failed to character_node move_node.");
-            move_node(&balloon_node_ref, &character.pos_x, &character.pos_y)
-                .expect("Failed to balloon_node move_node");
-        }
-    });
+        use_effect_with_deps(
+            move |(character, character_node, balloon_node_ref)| {
+                move_node(&character_node, &character.pos_x, &character.pos_y)
+                    .expect("Failed to character_node move_node.");
+                move_node(&balloon_node_ref, &character.pos_x, &character.pos_y)
+                    .expect("Failed to balloon_node move_node");
+
+                let ele = character_node.cast::<HtmlElement>().unwrap();
+                log::debug!(
+                    "chara-pos {} {} {} {}; pos {} {}",
+                    ele.offset_top(),
+                    ele.offset_left(),
+                    ele.offset_width(),
+                    ele.offset_height(),
+                    &character.pos_x,
+                    &character.pos_y
+                );
+            },
+            (character, character_node, balloon_node_ref),
+        );
+    }
 
     let ChatTextState {
         message,
