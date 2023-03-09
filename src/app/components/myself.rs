@@ -31,11 +31,6 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
 
     let my_character_node_ref = use_node_ref();
     let balloon_node_ref = use_node_ref();
-    let is_display_balloon = use_bool_toggle(false);
-    let balloon_timeout = {
-        let is_display_balloon = is_display_balloon.clone();
-        use_timeout(move || is_display_balloon.set(false), 5000)
-    };
     let is_active = use_bool_toggle(false);
     let chat_text_hash = use_store_value::<ChatTextHashState>();
 
