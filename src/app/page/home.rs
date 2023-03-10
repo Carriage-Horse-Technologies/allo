@@ -1,12 +1,5 @@
-
-
-
-
 use yew::prelude::*;
-use yew_hooks::{
-    use_list, use_websocket_with_options,
-    UseWebSocketOptions,
-};
+use yew_hooks::{use_list, use_websocket_with_options, UseWebSocketOptions};
 use yewdux::prelude::use_store;
 
 use crate::{
@@ -37,11 +30,7 @@ pub fn Home(props: &HomeProps) -> Html {
         let other_characters = other_characters.clone();
         let chat_text_hash_dispatch = chat_text_hash_dispatch;
         use_websocket_with_options(
-            format!(
-                "{}/{}",
-                CONFIG.location_provider_ws_url,
-                *settings::USER_ID
-            ),
+            format!("{}/{}", CONFIG.location_provider_ws_url, *settings::USER_ID),
             UseWebSocketOptions {
                 onopen: Some(Box::new(|event| {
                     log::info!("ws connected time_stamp: {}", event.time_stamp());
