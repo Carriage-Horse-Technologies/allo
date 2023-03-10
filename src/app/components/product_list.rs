@@ -1,6 +1,6 @@
-use std::{borrow::Borrow, collections::HashMap};
+use std::{collections::HashMap};
 
-use web_sys::DomRect;
+
 use yew::prelude::*;
 use yew_hooks::{use_map, UseMapHandle};
 use yewdux::prelude::use_store;
@@ -11,7 +11,7 @@ use crate::{
         models::{PageOffsetDomRect, ProductInfo},
         states::CollisionState,
     },
-    my_utils::{check_collision_with_dom_rect, check_collision_with_page_offset_dom_rect},
+    my_utils::{check_collision_with_page_offset_dom_rect},
 };
 
 const PRODUCT_INFO_LIST: [ProductInfo; 4] = [ProductInfo {
@@ -51,21 +51,21 @@ pub(crate) fn ProductList(props: &ProductListProps) -> Html {
     {
         let myself_rect = myself_rect.clone();
         let products_rect_map = products_rect_map.clone();
-        let collision_state_dispatch = collision_state_dispatch.clone();
+        let collision_state_dispatch = collision_state_dispatch;
         use_effect_with_deps(
             move |(myself_rect, products_rect_map)| {
                 if let Some(myself_rect) = myself_rect {
                     let mut on_collision_stay = CollisionState::default();
                     for (title, prod_rect) in products_rect_map.current().iter() {
                         log::debug!(
-                            "rect my {} {} {} {}",
+                            "rect-my {} {} {} {}",
                             myself_rect.top(),
                             myself_rect.bottom(),
                             myself_rect.left(),
                             myself_rect.right()
                         );
                         log::debug!(
-                            "rect {} {} {} {} {}",
+                            "rect-prod {} {} {} {} {}",
                             title,
                             prod_rect.top(),
                             prod_rect.bottom(),
@@ -94,7 +94,7 @@ pub(crate) fn ProductList(props: &ProductListProps) -> Html {
     }
 
     html! {
-        <div>
+        <div class={classes!("grid", "grid-cols-4")}>
             {
                 for PRODUCT_INFO_LIST.iter().map(|info| {
                     html! {

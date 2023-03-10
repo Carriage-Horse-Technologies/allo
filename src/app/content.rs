@@ -1,6 +1,7 @@
 use crate::routes::Route;
 
 use yew::prelude::*;
+
 use yew_router::Switch;
 
 use super::{components::header::Header, page::home::Home};
