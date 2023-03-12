@@ -19,4 +19,4 @@ pub static CONFIG: Lazy<Config> = Lazy::new(|| Config {
     },
 });
 
-pub static USER_ID: Lazy<String> = Lazy::new(|| Uuid::new_v4().to_string());
+pub const GITHUB_USERNAME_KEY: &'static str = "github_user_name";

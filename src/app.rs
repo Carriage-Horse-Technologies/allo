@@ -4,8 +4,6 @@ pub(crate) mod models;
 pub(crate) mod page;
 pub(crate) mod states;
 
-
-
 use yew::prelude::*;
 
 use yew_router::BrowserRouter;

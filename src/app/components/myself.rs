@@ -1,19 +1,18 @@
 use std::{borrow::Borrow, cell::RefCell, rc::Rc};
 
-
 use wasm_bindgen::{prelude::Closure, JsCast};
 use web_sys::{HtmlElement, WebSocket};
 use yew::prelude::*;
-use yew_hooks::{use_bool_toggle};
-use yewdux::prelude::{use_store_value};
+use yew_hooks::use_bool_toggle;
+use yewdux::prelude::use_store_value;
 
 use crate::{
     app::{
         components::balloon::Balloon,
         models::{LocationType, MyLocation, PageOffsetDomRect},
-        states::{ChatTextHashState, ChatTextState},
+        states::{ChatTextHashState, ChatTextState, Username},
     },
-    settings,
+    settings::{self},
 };
 
 use super::move_node;
@@ -28,12 +27,14 @@ pub(crate) struct MyselfProps {
 pub(crate) fn Myself(props: &MyselfProps) -> Html {
     let MyselfProps { ws, myself_rect } = props;
 
+    let username = use_store_value::<Username>();
     let my_character_node_ref = use_node_ref();
     let balloon_node_ref = use_node_ref();
     let is_active = use_bool_toggle(false);
     let chat_text_hash = use_store_value::<ChatTextHashState>();
 
     {
+        let username = username.clone();
         let my_character_node_ref = my_character_node_ref.clone();
         let balloon_node_ref = balloon_node_ref.clone();
         let is_active = is_active.clone();
@@ -104,7 +105,7 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                         if let Some(myself_rect) = (*myself_rect).clone() {
                             let my_pos = MyLocation {
                                 action: LocationType::UpdateCharacterPos,
-                                user_id: settings::USER_ID.to_string(),
+                                user_id: username.0.clone(),
                                 pos_x: myself_rect.left(),
                                 pos_y: myself_rect.top(),
                             };
@@ -164,9 +165,7 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
     let ChatTextState {
         message,
         is_display_balloon,
-    } = chat_text_hash
-        .get(settings::USER_ID.as_str()).cloned()
-        .unwrap_or_default();
+    } = chat_text_hash.get(&username.0).cloned().unwrap_or_default();
 
     html! {
         <div>
@@ -180,7 +179,7 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                     "overflow-hidden"
             )}
                 id="myself" >
-                <img src="https://avatars.githubusercontent.com/u/40430090?s=400&u=3833aeb5ec8671c98d415b620b5e6a65cfb0d6d2&v=4" width=64 alt="myself" />
+                <img src={format!("https://github.com/{}.png", (*username).0.clone())} width=64 alt="myself" />
             </div>
             <Balloon node_ref={balloon_node_ref} is_display_balloon={is_display_balloon} is_myself={true}>
             {

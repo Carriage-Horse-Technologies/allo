@@ -1,6 +1,6 @@
 use yew::prelude::*;
 use yew_hooks::{use_list, use_websocket_with_options, UseWebSocketOptions};
-use yewdux::prelude::use_store;
+use yewdux::prelude::{use_store, use_store_value};
 
 use crate::{
     app::{
@@ -9,7 +9,7 @@ use crate::{
             other_character::OtherCharacter, product_list::ProductList,
         },
         models::{CharacterLocations, LocationType, PageOffsetDomRect},
-        states::{ChatTextHashState, ChatTextState},
+        states::{ChatTextHashState, ChatTextState, Username},
     },
     settings::{self, CONFIG},
 };
@@ -21,16 +21,18 @@ pub struct HomeProps {}
 pub fn Home(props: &HomeProps) -> Html {
     let HomeProps {} = props;
 
+    let username = use_store_value::<Username>();
     let other_characters = use_list(vec![]);
     let (_, chat_text_hash_dispatch) = use_store::<ChatTextHashState>();
 
     let myself_rect = use_state(|| Option::<PageOffsetDomRect>::None);
     // WebSocket設定
     let ws = {
+        let username = username.clone();
         let other_characters = other_characters.clone();
         let chat_text_hash_dispatch = chat_text_hash_dispatch;
         use_websocket_with_options(
-            format!("{}/{}", CONFIG.location_provider_ws_url, *settings::USER_ID),
+            format!("{}/{}", CONFIG.location_provider_ws_url, username.0),
             UseWebSocketOptions {
                 onopen: Some(Box::new(|event| {
                     log::info!("ws connected time_stamp: {}", event.time_stamp());
@@ -39,8 +41,8 @@ pub fn Home(props: &HomeProps) -> Html {
                     log::debug!("[receive] {:#?}", message);
                     let Ok(mut received_chara_locations) =
                         serde_json::from_str::<CharacterLocations>(&message) else {
-                        log::warn!("Failed to json parse.");
-                        return;
+                            log::warn!("Failed to json parse.");
+                            return;
                         };
                     // debug用にランダムで移動させる
                     if cfg!(debug_assertions) {
@@ -91,9 +93,13 @@ pub fn Home(props: &HomeProps) -> Html {
         )
     };
 
-    let _product_title = "RED".to_string();
-    let _url = "https://games.jyogi.net/".to_string();
-    let _img_src = "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01GDGDQ2DYKE527HP55Z0R008H.png&w=1920&q=75".to_string();
+    if username.0.is_empty() {
+        web_sys::window()
+            .unwrap()
+            .location()
+            .set_href("/entrance")
+            .unwrap();
+    }
 
     html! {
         <div class="pt-[100px] w-[2000px] h-[1500px] dark:bg-dark-content-background">

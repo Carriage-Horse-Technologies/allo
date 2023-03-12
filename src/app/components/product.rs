@@ -1,10 +1,8 @@
-use web_sys::{HtmlElement};
+use web_sys::HtmlElement;
 use yew::prelude::*;
 use yew_hooks::UseMapHandle;
 
-use crate::{
-    app::models::{PageOffsetDomRect, ProductInfo},
-};
+use crate::app::models::{PageOffsetDomRect, ProductInfo};
 
 #[derive(PartialEq, Properties)]
 pub(crate) struct ProductProps {
@@ -78,14 +76,11 @@ pub(crate) fn Product(props: &ProductProps) -> Html {
     };
 
     html! {
-        <div ref={node} class="w-fit h-fit m-10">
-            <a href={product_info.url.clone()} target="_blank" rel="noopener noreferrer"
-                class="flex max-w-[512px]">
-                <figure class="h-fit">
-                    <img src={product_info.img_src.clone()} onload={onload} alt={product_info.title.clone()} width=512 />
-                    <figcaption class="text-center">{product_info.title.clone()}</figcaption>
-                </figure>
-            </a>
+        <div ref={node} class="w-fit h-fit m-10 flex max-w-[512px]">
+            <figure class="h-fit">
+                <img src={product_info.img_src.clone()} onload={onload} alt={product_info.title.clone()} width=512 />
+                <figcaption class="text-center">{product_info.title.clone()}</figcaption>
+            </figure>
         </div>
     }
 }

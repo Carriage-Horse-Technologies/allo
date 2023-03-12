@@ -1,12 +1,10 @@
-
-
 use web_sys::HtmlTextAreaElement;
-use yew::{prelude::*};
+use yew::prelude::*;
 use yew_hooks::use_timeout;
-use yewdux::prelude::{use_store};
+use yewdux::prelude::{use_store, use_store_value};
 
 use crate::{
-    app::states::{ChatTextHashState, ChatTextState},
+    app::states::{ChatTextHashState, ChatTextState, Username},
     settings,
 };
 
@@ -17,11 +15,13 @@ pub(crate) struct ChatTextFieldProps {}
 pub(crate) fn ChatTextField(props: &ChatTextFieldProps) -> Html {
     let ChatTextFieldProps {} = props;
 
+    let username = use_store_value::<Username>();
     let node = use_node_ref();
     let (_, chat_text_dispatch) = use_store::<ChatTextHashState>();
 
     // 送信5秒後に吹き出しを非表示にするcallback
     let balloon_timeout = {
+        let username = username.clone();
         let chat_text_dispatch = chat_text_dispatch.clone();
 
         use_timeout(
@@ -29,7 +29,7 @@ pub(crate) fn ChatTextField(props: &ChatTextFieldProps) -> Html {
                 chat_text_dispatch.reduce_mut(|state| {
                     state
                         .hash
-                        .insert(settings::USER_ID.to_string(), ChatTextState::default())
+                        .insert(username.0.clone(), ChatTextState::default())
                 })
             },
             5000,
@@ -37,6 +37,7 @@ pub(crate) fn ChatTextField(props: &ChatTextFieldProps) -> Html {
     };
 
     let onkeypress = {
+        let username = username.clone();
         let node = node.clone();
         let chat_text_dispatch = chat_text_dispatch;
         let balloon_timeout = balloon_timeout;
@@ -53,7 +54,7 @@ pub(crate) fn ChatTextField(props: &ChatTextFieldProps) -> Html {
                 log::debug!("Send chat message. value: {}", textarea.value());
                 chat_text_dispatch.reduce_mut(|state| {
                     state.hash.insert(
-                        settings::USER_ID.to_string(),
+                        username.0.clone(),
                         ChatTextState {
                             message: textarea.value(),
                             is_display_balloon: true,
