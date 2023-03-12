@@ -36,7 +36,7 @@ pub(crate) fn EnterButton(props: &EnterButtonProps) -> Html {
     html! {
         <button type="button" onclick={onclick}
             disabled={!collision_state.on_collision_stay}
-            class="fixed flex flex-row items-center z-901
+            class="fixed flex flex-row items-center z-[901]
             w-[256px] h-[64px] bottom-[50px] left-1/2 -translate-x-1/2
             rounded-full
             bg-enter-button text-5xl

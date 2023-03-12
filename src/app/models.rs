@@ -8,12 +8,20 @@ pub(crate) struct CharacterLocations {
     pub(crate) characters: Vec<Character>,
 }
 
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+pub(crate) struct ChatMessage {
+    pub(crate) action: LocationType,
+    pub(crate) user_id: String,
+    pub(crate) message: String,
+}
+
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub(crate) enum LocationType {
     UpdateCharacterPos,
     UpdateMyPos,
     UpdateCharacterPosExample,
+    ChatMessage,
 }
 
 impl Default for LocationType {

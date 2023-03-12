@@ -1,3 +1,5 @@
+use anyhow::Result;
+use reqwasm::http::Request;
 use web_sys::DomRect;
 
 use crate::app::models::PageOffsetDomRect;
@@ -28,6 +30,10 @@ pub(crate) fn check_collision_with_page_offset_dom_rect(
         (dom_a.top(), dom_a.bottom(), dom_a.left(), dom_a.right()),
         (dom_b.top(), dom_b.bottom(), dom_b.left(), dom_b.right()),
     )
+}
+
+pub(crate) fn github_user_icon_url(username: &str) -> String {
+    format!("https://github.com/{username}.png")
 }
 
 #[cfg(test)]

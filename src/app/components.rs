@@ -8,6 +8,7 @@ pub(crate) mod balloon;
 pub(crate) mod chat_text_field;
 pub(crate) mod enter_button;
 pub(crate) mod header;
+pub(crate) mod input_user_name;
 pub(crate) mod myself;
 pub(crate) mod other_character;
 pub(crate) mod product;
