@@ -1,6 +1,5 @@
 use yew::prelude::*;
 
-
 #[derive(PartialEq, Properties)]
 pub(crate) struct BalloonProps {
     pub(crate) node_ref: NodeRef,

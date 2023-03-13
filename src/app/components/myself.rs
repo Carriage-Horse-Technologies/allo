@@ -33,35 +33,6 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
     let is_active = use_bool_toggle(false);
     let chat_text_hash = use_store_value::<ChatTextHashState>();
 
-    // let send_my_pos = {
-    //     let username = username.clone();
-    //     let myself_rect = myself_rect.clone();
-    //     let ws = ws.clone();
-    //     move || {
-    //         if let Some(myself_rect) = (*myself_rect).clone() {
-    //             let my_pos = MyLocation {
-    //                 action: LocationType::UpdateCharacterPos,
-    //                 user_id: username.0.clone(),
-    //                 pos_x: myself_rect.left() + 32.,
-    //                 pos_y: myself_rect.top() + 32.,
-    //             };
-    //             if let Err(send_result) = (*ws)
-    //                 .borrow()
-    //                 .clone()
-    //                 .unwrap()
-    //                 .send_with_str(&serde_json::to_string(&my_pos).unwrap())
-    //             {
-    //                 log::error!(
-    //                     "Failed to Websocket send error. {}",
-    //                     send_result.as_string().unwrap_or_default()
-    //                 );
-    //             } else {
-    //                 log::debug!("Success websocket send");
-    //             }
-    //         }
-    //     }
-    // };
-
     {
         let username = username.clone();
         let my_character_node_ref = my_character_node_ref.clone();
