@@ -10,7 +10,7 @@ pub static CONFIG: Lazy<Config> = Lazy::new(|| Config {
     location_provider_ws_url: if cfg!(debug_assertions) {
         "ws://localhost/ws"
     } else {
-        "ws://location-provider.yukinissie.com/ws"
+        "wss://location-provider.yukinissie.com/ws"
     },
     log_level: if cfg!(debug_assertions) {
         log::Level::Trace
