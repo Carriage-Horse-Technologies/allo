@@ -170,9 +170,8 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                     "rounded-full",
                     "transform-gpu", "translate-x-[50vw]", "translate-y-[50vh]",
                     "z-[900]", "ease-out", "duration-200",
-                    "overflow-hidden"
-            )}
-                id="myself" >
+                    "overflow-hidden", "border-4", "border-green-500"
+            )}>
                 <img src={format!("https://github.com/{}.png", (*username).0.clone())} width=64 alt="myself" />
             </div>
             <Balloon node_ref={balloon_node_ref} is_display_balloon={is_display_balloon} is_myself={true}>

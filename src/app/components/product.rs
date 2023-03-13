@@ -22,7 +22,7 @@ pub(crate) fn Product(props: &ProductProps) -> Html {
     } = props;
 
     let node = use_node_ref();
-    let (modal_state, modal_state_dispatch) = use_store::<ModalState>();
+    let (_, modal_state_dispatch) = use_store::<ModalState>();
     {
         let title = product_info.title.clone();
         let node = node.clone();
@@ -83,7 +83,7 @@ pub(crate) fn Product(props: &ProductProps) -> Html {
         let product_info = product_info.clone();
         let modal_state_dispatch = modal_state_dispatch.clone();
         Callback::from(move |_: MouseEvent| {
-            modal_state_dispatch.reduce(|state| {
+            modal_state_dispatch.reduce(|_| {
                 ModalState {
                     is_display: true,
                     product_info: product_info.clone(),
@@ -94,10 +94,19 @@ pub(crate) fn Product(props: &ProductProps) -> Html {
     };
 
     html! {
-        <div ref={node} onclick={onclick} class="w-fit h-fit m-10 flex max-w-[512px]">
+        <div ref={node} onclick={onclick}
+        class="w-fit h-fit m-8 flex max-w-[512px] hover:border-2 hover:border-picture-frame">
             <figure class="h-fit">
                 <img src={product_info.img_src.clone()} onload={onload} alt={product_info.title.clone()} width=512 />
-                <figcaption class="text-center">{product_info.title.clone()}</figcaption>
+                <figcaption class="flex justify-center items-center mx-auto
+                            text-center text-4xl text-light-text py-2 border-8 border-picture-frame bg-picture-frame-pale">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-big-up-line" width="28" height="28" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M9 12h-3.586a1 1 0 0 1 -.707 -1.707l6.586 -6.586a1 1 0 0 1 1.414 0l6.586 6.586a1 1 0 0 1 -.707 1.707h-3.586v6h-6v-6z"></path>
+                        <path d="M9 21h6"></path>
+                    </svg>
+                    <p class="pl-3">{product_info.title.clone()}</p>
+                </figcaption>
             </figure>
         </div>
     }

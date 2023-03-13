@@ -39,8 +39,11 @@ pub(crate) fn EnterButton(props: &EnterButtonProps) -> Html {
             class="fixed flex flex-row items-center z-[901]
             w-[256px] h-[64px] bottom-[50px] left-1/2 -translate-x-1/2
             rounded-full
-            bg-enter-button text-5xl
-            disabled:opacity-30 disabled:bg-gray-600">
+            bg-enter-button text-5xl text-gray-700
+            hover:bg-enter-button-deep
+            disabled:opacity-30 disabled:bg-gray-600 disabled:text-gray-300
+            disabled:w-[200px] disabled:h-[48px] disabled:text-4xl
+            ">
             <p class="mx-auto">{"Enter!"}</p>
         </button>
     }

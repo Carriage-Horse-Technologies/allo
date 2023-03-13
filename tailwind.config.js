@@ -46,7 +46,10 @@ module.exports = {
 
         // NOTE: 共通カラー
         "link-text": "#31A0D3",
-        "enter-button": "#00ff55"
+        "enter-button": "#00ff55",
+        "enter-button-deep": "#00A336",
+        "picture-frame": "#FFD700",
+        "picture-frame-pale": "#FFE556"
       },
       transitionTimingFunction: {
         "character-move": "cubic-bezier(.45,0,.82,.56)"
@@ -76,9 +79,11 @@ module.exports = {
             opacity: "0"
           }
         }
+      },
+      backgroundImage: {
+        'content-background-img': "url('https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nr7eduszgfzb/b/image-bucket/o/allo%2Fallo-bg.png')",
       }
     },
-
   },
   plugins: [],
   darkMode: "class"

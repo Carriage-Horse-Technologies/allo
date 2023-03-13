@@ -102,7 +102,7 @@ pub(crate) fn ChatTextField(props: &ChatTextFieldProps) -> Html {
         <textarea ref={node} onkeydown={onkeydown} name="chat" id="chat" cols="40" rows="3"
             placeholder={"Input text message...\nCtrl+Enter to send"}
             class={classes!("fixed", "rounded-2xl", "bg-dark-primary-deep",
-            "bottom-[50px]", "left-[70vw]", "p-2"
+            "bottom-[50px]", "left-[70vw]", "p-2", "z-[930]"
             )}
         />
     }

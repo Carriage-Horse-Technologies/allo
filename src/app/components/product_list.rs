@@ -99,7 +99,8 @@ pub(crate) fn ProductList(props: &ProductListProps) -> Html {
     }
 
     html! {
-        <div class={classes!("grid", "grid-cols-4")}>
+        <div class={classes!("grid", "grid-cols-2", "justify-items-center", "place-content-around", "place-items-center",
+                            )}>
             {
                 for PRODUCT_INFO_LIST.iter().map(|info| {
                     html! {
