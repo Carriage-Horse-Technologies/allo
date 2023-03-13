@@ -13,30 +13,31 @@ use crate::{
     my_utils::check_collision_with_page_offset_dom_rect,
 };
 
-const PRODUCT_INFO_LIST: [ProductInfo; 4] = [ProductInfo {
-    title: "RED",
-    url: "https://games.jyogi.net/",
-    topaz_url: "https://topaz.dev/projects/0bdca801952a9a59bba7",
-    img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01GDGDQ2DYKE527HP55Z0R008H.png&w=1920&q=75"
-},
-ProductInfo {
-    title: "奇声",
-    url: "https://kisei.yukinissie.com/",
-    topaz_url: "",
-    img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01GDGDQ2DYKE527HP55Z0R008H.png&w=1920&q=75"
-},
-ProductInfo {
-    title: "デスマTV",
-    url: "https://viewer.deathmatv.online/",
-    topaz_url: "https://topaz.dev/projects/50a804868af6407eb504",
-    img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01G5X2YKFPN5EDNTJB9VGRFT5R.png&w=3840&q=75"
-},
-ProductInfo {
-    title: "RED4",
-    url: "https://games.jyogi.net/",
-    topaz_url: "",
-    img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01GDGDQ2DYKE527HP55Z0R008H.png&w=1920&q=75"
-}
+const PRODUCT_INFO_LIST: [ProductInfo; 4] = [
+    ProductInfo {
+        title: "RED",
+        url: "https://games.jyogi.net/",
+        topaz_url: "https://topaz.dev/projects/0bdca801952a9a59bba7",
+        img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01GDGDQ2DYKE527HP55Z0R008H.png&w=1920&q=75"
+    },
+    ProductInfo {
+        title: "奇声",
+        url: "https://kisei.yukinissie.com/",
+        topaz_url: "https://topaz.dev/projects/4f42624a1a4028f63363",
+        img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01FY73Y30XEE6T5BCAC0JD5JSZ.jpeg&w=2048&q=75"
+    },
+    ProductInfo {
+        title: "デスマTV",
+        url: "https://viewer.deathmatv.online/",
+        topaz_url: "https://topaz.dev/projects/50a804868af6407eb504",
+        img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01G5X2YKFPN5EDNTJB9VGRFT5R.png&w=3840&q=75"
+    },
+    ProductInfo {
+        title: "まさかり",
+        url: "https://masakari.yukinissie.com/",
+        topaz_url: "https://masakari.yukinissie.com/",
+        img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01GDGDQ2DYKE527HP55Z0R008H.png&w=1920&q=75"
+    }
 ];
 
 #[derive(PartialEq, Properties)]
