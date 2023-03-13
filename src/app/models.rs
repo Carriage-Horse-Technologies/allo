@@ -21,7 +21,7 @@ pub(crate) enum LocationType {
     UpdateCharacterPos,
     UpdateMyPos,
     UpdateCharacterPosExample,
-    ChatMessage,
+    ActionChatMessage,
 }
 
 impl Default for LocationType {

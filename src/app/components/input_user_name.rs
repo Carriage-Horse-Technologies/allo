@@ -7,7 +7,6 @@ use yewdux::prelude::use_store;
 use crate::{
     app::states::Username,
     my_utils::{self, github_user_icon_url},
-    settings::GITHUB_USERNAME_KEY,
 };
 
 #[derive(PartialEq, Properties)]

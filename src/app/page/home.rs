@@ -8,7 +8,7 @@ use crate::{
             chat_text_field::ChatTextField, enter_button::EnterButton, myself::Myself,
             other_character::OtherCharacter, product_list::ProductList,
         },
-        models::{CharacterLocations, LocationType, PageOffsetDomRect},
+        models::{CharacterLocations, ChatMessage, LocationType, PageOffsetDomRect},
         states::{ChatTextHashState, ChatTextState, Username},
     },
     settings::{self, CONFIG},
@@ -39,44 +39,52 @@ pub fn Home(props: &HomeProps) -> Html {
                 })),
                 onmessage: Some(Box::new(move |message| {
                     log::debug!("[receive] {:#?}", message);
-                    let Ok(mut received_chara_locations) =
-                        serde_json::from_str::<CharacterLocations>(&message) else {
-                            log::warn!("Failed to json parse.");
-                            return;
-                        };
-                    // debug用にランダムで移動させる
-                    if cfg!(debug_assertions) {
-                        let mut pos_x = vec![0, 0, 0, 0, 0];
-                        let mut pos_y = vec![0, 0, 0, 0, 0];
-                        getrandom::getrandom(&mut pos_x).unwrap();
-                        getrandom::getrandom(&mut pos_y).unwrap();
-                        log::debug!("rand x: {:?}; y: {:?}", pos_x, pos_y);
-                        for i in 0..(received_chara_locations.characters.len()) {
-                            received_chara_locations.characters[i].pos_x = pos_x[i] as f64 * 6.;
-                            received_chara_locations.characters[i].pos_y = pos_y[i] as f64 * 3.;
-                        }
-                    }
-                    match received_chara_locations.action {
-                        LocationType::UpdateCharacterPosExample => {
-                            other_characters.set(received_chara_locations.characters.clone());
 
-                            // debug用
-                            {
-                                for chara in received_chara_locations.characters {
-                                    chat_text_hash_dispatch.reduce_mut(|state| {
-                                        state.hash.insert(
-                                            chara.user_id,
-                                            ChatTextState {
-                                                message: "test message".to_string(),
-                                                is_display_balloon: true,
-                                            },
-                                        )
-                                    });
-                                }
+                    // CharacterLocationsの処理
+                    if let Ok(mut received_chara_locations) =
+                        serde_json::from_str::<CharacterLocations>(&message)
+                    {
+                        // debug用にランダムで移動させる
+                        if cfg!(debug_assertions) {
+                            let mut pos_x = vec![0, 0, 0, 0, 0];
+                            let mut pos_y = vec![0, 0, 0, 0, 0];
+                            getrandom::getrandom(&mut pos_x).unwrap();
+                            getrandom::getrandom(&mut pos_y).unwrap();
+                            log::debug!("rand x: {:?}; y: {:?}", pos_x, pos_y);
+                            for i in 0..(received_chara_locations.characters.len()) {
+                                received_chara_locations.characters[i].pos_x = pos_x[i] as f64 * 6.;
+                                received_chara_locations.characters[i].pos_y = pos_y[i] as f64 * 3.;
                             }
                         }
-                        _ => (),
-                    };
+                        match received_chara_locations.action {
+                            LocationType::UpdateCharacterPosExample => {
+                                other_characters.set(received_chara_locations.characters.clone());
+                            }
+                            _ => (),
+                        };
+                    // ChatMessageの処理
+                    } else if let Ok(received_chat_message) =
+                        serde_json::from_str::<ChatMessage>(&message)
+                    {
+                        log::debug!(
+                            "chat message {} by {}",
+                            received_chat_message.message,
+                            received_chat_message.user_id
+                        );
+
+                        chat_text_hash_dispatch.reduce_mut(|state| {
+                            state.hash.insert(
+                                received_chat_message.user_id,
+                                ChatTextState {
+                                    message: received_chat_message.message,
+                                    is_display_balloon: true,
+                                },
+                            )
+                        });
+                    } else {
+                        log::warn!("Failed to json parse.");
+                        return;
+                    }
                 })),
                 onerror: Some(Box::new(|event| {
                     log::error!(
@@ -115,7 +123,7 @@ pub fn Home(props: &HomeProps) -> Html {
             </div>
             <ProductList myself_rect={(*myself_rect).clone()} />
             <EnterButton />
-            <ChatTextField />
+            <ChatTextField ws={ws.ws.clone()} />
         </div>
     }
 }
