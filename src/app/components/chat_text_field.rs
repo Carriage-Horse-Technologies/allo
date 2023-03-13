@@ -1,19 +1,26 @@
-use web_sys::HtmlTextAreaElement;
+use std::{cell::RefCell, rc::Rc};
+
+use web_sys::{HtmlTextAreaElement, WebSocket};
 use yew::prelude::*;
 use yew_hooks::use_timeout;
 use yewdux::prelude::{use_store, use_store_value};
 
 use crate::{
-    app::states::{ChatTextHashState, ChatTextState, Username},
+    app::{
+        models::{ChatMessage, LocationType},
+        states::{ChatTextHashState, ChatTextState, Username},
+    },
     settings,
 };
 
 #[derive(PartialEq, Properties)]
-pub(crate) struct ChatTextFieldProps {}
+pub(crate) struct ChatTextFieldProps {
+    pub(crate) ws: Rc<RefCell<Option<WebSocket>>>,
+}
 
 #[function_component]
 pub(crate) fn ChatTextField(props: &ChatTextFieldProps) -> Html {
-    let ChatTextFieldProps {} = props;
+    let ChatTextFieldProps { ws } = props;
 
     let username = use_store_value::<Username>();
     let node = use_node_ref();
@@ -41,6 +48,7 @@ pub(crate) fn ChatTextField(props: &ChatTextFieldProps) -> Html {
         let node = node.clone();
         let chat_text_dispatch = chat_text_dispatch;
         let balloon_timeout = balloon_timeout;
+        let ws = ws.clone();
         Callback::from(move |e: KeyboardEvent| {
             log::debug!(
                 "keypress ctrl: {}; enter: {} {} {}",
@@ -61,6 +69,26 @@ pub(crate) fn ChatTextField(props: &ChatTextFieldProps) -> Html {
                         },
                     );
                 });
+
+                // WS
+                let chat_message = ChatMessage {
+                    action: LocationType::ActionChatMessage,
+                    user_id: username.0.clone(),
+                    message: textarea.value(),
+                };
+                if let Err(send_result) = (*ws)
+                    .borrow()
+                    .clone()
+                    .unwrap()
+                    .send_with_str(&serde_json::to_string(&chat_message).unwrap())
+                {
+                    log::error!(
+                        "Failed to Websocket send error. {}",
+                        send_result.as_string().unwrap_or_default()
+                    );
+                } else {
+                    log::debug!("Success websocket send");
+                }
                 balloon_timeout.reset();
                 textarea.set_value("");
             }
