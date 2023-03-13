@@ -44,7 +44,7 @@ pub(crate) fn Balloon(props: &BalloonProps) -> Html {
                     "after:-bottom-[20px]"
         )}>
             if *is_display_balloon {
-                <div class={classes!("w-full", "h-full", "overflow-auto")}>
+                <div class={classes!("w-full", "h-full", "overflow-auto", "break-words")}>
                 {
                     for children.iter()
                 }

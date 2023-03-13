@@ -103,7 +103,7 @@ pub fn Home(props: &HomeProps) -> Html {
     }
 
     html! {
-        <div class="pt-[100px] w-[2000px] h-[1500px] dark:bg-dark-content-background">
+        <div class="pt-[100px] w-[2000px] h-[1500px] dark:bg-content-background-img dark:bg-no-repeat dark:bg-cover dark:dark:bg-dark-content-background">
             <Myself ws={ws.ws.clone()} myself_rect={myself_rect.clone()} />
             <div>
                 {
