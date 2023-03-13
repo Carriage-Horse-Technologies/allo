@@ -1,7 +1,7 @@
 use web_sys::HtmlElement;
 use yew::prelude::*;
 use yew_hooks::use_timeout;
-use yewdux::prelude::{use_store};
+use yewdux::prelude::use_store;
 
 use crate::{
     app::{
@@ -9,6 +9,7 @@ use crate::{
         models::Character,
         states::{ChatTextHashState, ChatTextState},
     },
+    my_utils::github_user_icon_url,
 };
 
 #[derive(PartialEq, Properties)]
@@ -53,7 +54,8 @@ pub(crate) fn OtherCharacter(props: &OtherCharacterProps) -> Html {
         message,
         is_display_balloon,
     } = chat_text_hash
-        .get(character.user_id.as_str()).cloned()
+        .get(character.user_id.as_str())
+        .cloned()
         .unwrap_or_default();
 
     let balloon_timeout = {
@@ -95,7 +97,7 @@ pub(crate) fn OtherCharacter(props: &OtherCharacterProps) -> Html {
                     "z-[800]", "ease-character-move", "duration-700",
                     "overflow-hidden"
             )}>
-                <img src={character.url.clone()} width=64 alt={character.user_id.clone()} />
+                <img src={github_user_icon_url(&character.user_id)} width=64 alt={character.user_id.clone()} />
 
             </div>
             <Balloon node_ref={balloon_node_ref} is_display_balloon={is_display_balloon} is_myself={false}>

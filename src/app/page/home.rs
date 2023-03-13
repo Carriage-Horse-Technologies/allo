@@ -8,7 +8,7 @@ use crate::{
             chat_text_field::ChatTextField, enter_button::EnterButton, myself::Myself,
             other_character::OtherCharacter, product_list::ProductList,
         },
-        models::{CharacterLocations, ChatMessage, LocationType, PageOffsetDomRect},
+        models::{Character, CharacterLocations, ChatMessage, LocationType, PageOffsetDomRect},
         states::{ChatTextHashState, ChatTextState, Username},
     },
     settings::{self, CONFIG},
@@ -45,20 +45,25 @@ pub fn Home(props: &HomeProps) -> Html {
                         serde_json::from_str::<CharacterLocations>(&message)
                     {
                         // debug用にランダムで移動させる
-                        if cfg!(debug_assertions) {
-                            let mut pos_x = vec![0, 0, 0, 0, 0];
-                            let mut pos_y = vec![0, 0, 0, 0, 0];
-                            getrandom::getrandom(&mut pos_x).unwrap();
-                            getrandom::getrandom(&mut pos_y).unwrap();
-                            log::debug!("rand x: {:?}; y: {:?}", pos_x, pos_y);
-                            for i in 0..(received_chara_locations.characters.len()) {
-                                received_chara_locations.characters[i].pos_x = pos_x[i] as f64 * 6.;
-                                received_chara_locations.characters[i].pos_y = pos_y[i] as f64 * 3.;
-                            }
-                        }
+                        // if cfg!(debug_assertions) {
+                        //     let mut pos_x = vec![0, 0, 0, 0, 0];
+                        //     let mut pos_y = vec![0, 0, 0, 0, 0];
+                        //     getrandom::getrandom(&mut pos_x).unwrap();
+                        //     getrandom::getrandom(&mut pos_y).unwrap();
+                        //     log::debug!("rand x: {:?}; y: {:?}", pos_x, pos_y);
+                        //     for i in 0..(received_chara_locations.characters.len()) {
+                        //         received_chara_locations.characters[i].pos_x = pos_x[i] as f64 * 6.;
+                        //         received_chara_locations.characters[i].pos_y = pos_y[i] as f64 * 3.;
+                        //     }
+                        // }
                         match received_chara_locations.action {
-                            LocationType::UpdateCharacterPosExample => {
-                                other_characters.set(received_chara_locations.characters.clone());
+                            LocationType::UpdateCharacterPos => {
+                                let other_vec = received_chara_locations
+                                    .characters
+                                    .into_iter()
+                                    .filter(|c| c.user_id != username.0)
+                                    .collect::<Vec<Character>>();
+                                other_characters.set(other_vec);
                             }
                             _ => (),
                         };
