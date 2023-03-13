@@ -4,7 +4,10 @@ use yew::prelude::*;
 
 use yew_router::Switch;
 
-use super::{components::header::Header, page::home::Home};
+use super::{
+    components::header::Header,
+    page::{entrance::Entrance, home::Home},
+};
 
 #[function_component]
 pub fn Content() -> Html {
@@ -23,6 +26,15 @@ pub fn Content() -> Html {
 
 fn switch(routes: Route) -> Html {
     match routes {
+        Route::Entrance => {
+            let fallback = html! {<div>{"Loading..."}</div>};
+            html! {
+                <Suspense {fallback}>
+                    <Header />
+                    <Entrance />
+                </Suspense>
+            }
+        }
         Route::Home => {
             let fallback = html! {<div>{"Loading..."}</div>};
             html! {
