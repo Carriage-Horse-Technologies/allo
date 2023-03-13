@@ -5,7 +5,7 @@ use yew::prelude::*;
 use yew_router::Switch;
 
 use super::{
-    components::header::Header,
+    components::{header::Header, modals::Modal},
     page::{entrance::Entrance, home::Home},
 };
 

@@ -3,6 +3,8 @@ use std::{collections::HashMap, fmt::Display};
 use serde::{Deserialize, Serialize};
 use yewdux::store::Store;
 
+use super::models::ProductInfo;
+
 #[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
 #[store(storage = "local")]
 pub(crate) struct Username(pub(crate) String);
@@ -34,4 +36,10 @@ impl ChatTextHashState {
     pub(crate) fn get(&self, key: &str) -> Option<&ChatTextState> {
         self.hash.get(key)
     }
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Store)]
+pub(crate) struct ModalState {
+    pub(crate) is_display: bool,
+    pub(crate) product_info: ProductInfo,
 }
