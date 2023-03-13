@@ -43,7 +43,7 @@ pub(crate) fn ChatTextField(props: &ChatTextFieldProps) -> Html {
         )
     };
 
-    let onkeypress = {
+    let onkeydown = {
         let username = username.clone();
         let node = node.clone();
         let chat_text_dispatch = chat_text_dispatch;
@@ -51,13 +51,16 @@ pub(crate) fn ChatTextField(props: &ChatTextFieldProps) -> Html {
         let ws = ws.clone();
         Callback::from(move |e: KeyboardEvent| {
             log::debug!(
-                "keypress ctrl: {}; enter: {} {} {}",
+                "keypress ctrl: {}; enter: {} {} {} meta {}",
                 e.ctrl_key(),
                 e.key_code(),
                 e.code(),
-                e.char_code()
+                e.char_code(),
+                e.meta_key()
             );
-            if e.ctrl_key() && (e.code() == "Enter" || e.code() == "NumpadEnter") {
+
+            if (e.ctrl_key() || e.meta_key()) && (e.code() == "Enter" || e.code() == "NumpadEnter")
+            {
                 let textarea = node.cast::<HtmlTextAreaElement>().unwrap();
                 log::debug!("Send chat message. value: {}", textarea.value());
                 chat_text_dispatch.reduce_mut(|state| {
@@ -96,7 +99,7 @@ pub(crate) fn ChatTextField(props: &ChatTextFieldProps) -> Html {
     };
 
     html! {
-        <textarea ref={node} onkeypress={onkeypress} name="chat" id="chat" cols="40" rows="3"
+        <textarea ref={node} onkeydown={onkeydown} name="chat" id="chat" cols="40" rows="3"
             placeholder={"Input text message...\nCtrl+Enter to send"}
             class={classes!("fixed", "rounded-2xl", "bg-dark-primary-deep",
             "bottom-[50px]", "left-[70vw]", "p-2"
