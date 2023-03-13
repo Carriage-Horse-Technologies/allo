@@ -51,6 +51,7 @@ pub(crate) struct MyLocation {
 pub(crate) struct ProductInfo {
     pub(crate) title: &'static str,
     pub(crate) url: &'static str,
+    pub(crate) topaz_url: &'static str,
     pub(crate) img_src: &'static str,
 }
 

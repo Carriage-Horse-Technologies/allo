@@ -5,8 +5,8 @@ use yewdux::prelude::{use_store, use_store_value};
 use crate::{
     app::{
         components::{
-            chat_text_field::ChatTextField, enter_button::EnterButton, myself::Myself,
-            other_character::OtherCharacter, product_list::ProductList,
+            chat_text_field::ChatTextField, enter_button::EnterButton, modals::Modal,
+            myself::Myself, other_character::OtherCharacter, product_list::ProductList,
         },
         models::{Character, CharacterLocations, ChatMessage, LocationType, PageOffsetDomRect},
         states::{ChatTextHashState, ChatTextState, Username},

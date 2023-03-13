@@ -1,8 +1,12 @@
 use web_sys::HtmlElement;
 use yew::prelude::*;
 use yew_hooks::UseMapHandle;
+use yewdux::prelude::use_store;
 
-use crate::app::models::{PageOffsetDomRect, ProductInfo};
+use crate::app::{
+    models::{PageOffsetDomRect, ProductInfo},
+    states::ModalState,
+};
 
 #[derive(PartialEq, Properties)]
 pub(crate) struct ProductProps {
@@ -18,6 +22,7 @@ pub(crate) fn Product(props: &ProductProps) -> Html {
     } = props;
 
     let node = use_node_ref();
+    let (modal_state, modal_state_dispatch) = use_store::<ModalState>();
     {
         let title = product_info.title.clone();
         let node = node.clone();
@@ -74,9 +79,22 @@ pub(crate) fn Product(props: &ProductProps) -> Html {
             );
         })
     };
+    let onclick = {
+        let product_info = product_info.clone();
+        let modal_state_dispatch = modal_state_dispatch.clone();
+        Callback::from(move |_: MouseEvent| {
+            modal_state_dispatch.reduce(|state| {
+                ModalState {
+                    is_display: true,
+                    product_info: product_info.clone(),
+                }
+                .into()
+            })
+        })
+    };
 
     html! {
-        <div ref={node} class="w-fit h-fit m-10 flex max-w-[512px]">
+        <div ref={node} onclick={onclick} class="w-fit h-fit m-10 flex max-w-[512px]">
             <figure class="h-fit">
                 <img src={product_info.img_src.clone()} onload={onload} alt={product_info.title.clone()} width=512 />
                 <figcaption class="text-center">{product_info.title.clone()}</figcaption>
