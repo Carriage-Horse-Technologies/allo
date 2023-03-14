@@ -115,7 +115,7 @@ pub fn Home(props: &HomeProps) -> Html {
     }
 
     html! {
-        <div class={classes!("pt-[100px]", WORLD_SIZE_CLASS_W.as_str(), WORLD_SIZE_CLASS_H.as_str(), "dark:bg-content-background-img", "dark:bg-no-repeat", "dark:bg-cover", "dark:dark:bg-dark-content-background")}>
+        <div class={classes!("pt-[100px]", WORLD_SIZE_CLASS_W.as_str(), WORLD_SIZE_CLASS_H.as_str(), "dark:bg-tile-bg-img", "dark:bg-repeat", "dark:bg-auto", "dark:dark:bg-dark-content-background")}>
             <Myself ws={ws.ws.clone()} myself_rect={myself_rect.clone()} />
             <div>
                 {
