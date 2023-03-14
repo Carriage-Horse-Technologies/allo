@@ -27,5 +27,11 @@ pub const CHARA_OFFSET: u32 = CHARA_SIZE / 2;
 pub const SCROLL_PX: f64 = 10.;
 // w-[2000px] h-[2000px]
 pub const WORLD_SIZE: (u32, u32) = (2000, 2000);
+pub const GRADIENT_COLOR: Lazy<Vec<&str>> = Lazy::new(|| {
+    vec![
+        "#FF0000", "#FF7C00", "#FFFF00", "#5DFF00", "#00FFB6", "#00D1FF", "#002EFF", "#7800FF",
+        "#FF00F7", "#FF008F",
+    ]
+});
 pub static WORLD_SIZE_CLASS_W: Lazy<String> = Lazy::new(|| format!("w-[{}px]", WORLD_SIZE.0));
 pub static WORLD_SIZE_CLASS_H: Lazy<String> = Lazy::new(|| format!("h-[{}px]", WORLD_SIZE.1));

@@ -12,6 +12,7 @@ use crate::{
         states::{CollisionState, ModalState},
     },
     my_utils::check_collision_with_page_offset_dom_rect,
+    settings::GRADIENT_COLOR,
     static_data::{NEW_PRODUCT_INFO, PAST_PRODUCT_INFO_LIST},
 };
 
@@ -82,41 +83,11 @@ pub(crate) fn ProductList(props: &ProductListProps) -> Html {
         let new_product_node = new_product_node.clone();
         use_interval(
             move || {
-                let gradient_color = vec!["#6080B0", "#08DCF9", "#FF2775"];
                 let new_product_element = new_product_node.cast::<HtmlElement>().unwrap();
                 let style = new_product_element.style();
-                // match *gradient_counter {
-                //     0 => style
-                //         .set_property(
-                //             "background",
-                //             &format!(
-                //                 "linear-gradient(to right, {}, {}, {})",
-                //                 gradient_color.0, gradient_color.1, gradient_color.2
-                //             ),
-                //         )
-                //         .unwrap(),
-                //     1 => style
-                //         .set_property(
-                //             "background",
-                //             &format!(
-                //                 "linear-gradient(to right, {}, {}, {})",
-                //                 gradient_color.1, gradient_color.2, gradient_color.0
-                //             ),
-                //         )
-                //         .unwrap(),
-                //     2 => style
-                //         .set_property(
-                //             "background",
-                //             &format!(
-                //                 "linear-gradient(to right, {}, {}, {})",
-                //                 gradient_color.2, gradient_color.0, gradient_color.1
-                //             ),
-                //         )
-                //         .unwrap(),
-                //     _ => (),
-                // }
-                set_gradient(&gradient_color, &style, *gradient_counter);
-                gradient_counter.set((*gradient_counter + 1) % gradient_color.len())
+
+                set_gradient(&GRADIENT_COLOR, &style, *gradient_counter);
+                gradient_counter.set((*gradient_counter + 1) % GRADIENT_COLOR.len())
             },
             100,
         );
@@ -145,7 +116,7 @@ pub(crate) fn ProductList(props: &ProductListProps) -> Html {
 
 fn set_gradient(gradient_color: &Vec<&str>, style: &CssStyleDeclaration, current_index: usize) {
     let grad_num = gradient_color.len();
-    let mut property_value = "linear-gradient(to right, ".to_string();
+    let mut property_value = "linear-gradient(to top left, ".to_string();
     for i in current_index..(current_index + grad_num) {
         property_value.push_str(&gradient_color[i % grad_num]);
         property_value.push_str(",");
