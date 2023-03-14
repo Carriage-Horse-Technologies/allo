@@ -106,10 +106,17 @@ pub(crate) fn OtherCharacter(props: &OtherCharacterProps) -> Html {
                     "rounded-full",
                     "transform-gpu", "translate-x-[50vw]", "translate-y-[50vh]",
                     "z-[800]", "ease-character-move", "duration-700",
-                    "overflow-hidden"
+                    "overflow-hidden",
+                    "hover:content",
+                    // "hover:overflow-visible",
+                    // "group"
             )}>
                 <img src={github_user_icon_url(&character.user_id)} width=64 alt={character.user_id.clone()} />
-
+                // <span class="opacity-0 w-[74px] invisible rounded text-[12px]
+                // font-bold text-white py-1 bg-slate-600 top-11 -left-3
+                // group-hover:visible opacity-100 absolute">
+                //     {&character.user_id}
+                // </span>
             </div>
             <Balloon node_ref={balloon_node_ref} is_display_balloon={is_display_balloon} is_myself={false}>
             {

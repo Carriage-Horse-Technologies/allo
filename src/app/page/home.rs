@@ -5,13 +5,15 @@ use yewdux::prelude::{use_store, use_store_value};
 use crate::{
     app::{
         components::{
-            chat_text_field::ChatTextField, enter_button::EnterButton, modals::Modal,
-            myself::Myself, other_character::OtherCharacter, product_list::ProductList,
+            chat_text_field::ChatTextField, enter_button::EnterButton,
+            entrance_back_button::EntranceBackButton, first_visit_modals::FirstVisitModal,
+            modals::Modal, myself::Myself, other_character::OtherCharacter,
+            product_list::ProductList,
         },
         models::{Character, CharacterLocations, ChatMessage, LocationType, PageOffsetDomRect},
-        states::{ChatTextHashState, ChatTextState, Username},
+        states::{ChatTextHashState, ChatTextState, FirstVisitState, Username},
     },
-    settings::{self, CONFIG},
+    settings::{self, CONFIG, WORLD_SIZE_CLASS_H, WORLD_SIZE_CLASS_W},
 };
 
 #[derive(PartialEq, Properties)]
@@ -24,6 +26,7 @@ pub fn Home(props: &HomeProps) -> Html {
     let username = use_store_value::<Username>();
     let other_characters = use_list(vec![]);
     let (_, chat_text_hash_dispatch) = use_store::<ChatTextHashState>();
+    let first_visit = use_store_value::<FirstVisitState>();
 
     let myself_rect = use_state(|| Option::<PageOffsetDomRect>::None);
     // WebSocket設定
@@ -103,7 +106,7 @@ pub fn Home(props: &HomeProps) -> Html {
     }
 
     html! {
-        <div class="pt-[100px] w-[2000px] h-[1500px] dark:bg-content-background-img dark:bg-no-repeat dark:bg-cover dark:dark:bg-dark-content-background">
+        <div class={classes!("pt-[100px]", WORLD_SIZE_CLASS_W.as_str(), WORLD_SIZE_CLASS_H.as_str(), "dark:bg-content-background-img", "dark:bg-no-repeat", "dark:bg-cover", "dark:dark:bg-dark-content-background")}>
             <Myself ws={ws.ws.clone()} myself_rect={myself_rect.clone()} />
             <div>
                 {
@@ -117,6 +120,10 @@ pub fn Home(props: &HomeProps) -> Html {
             <ProductList myself_rect={(*myself_rect).clone()} />
             <EnterButton />
             <ChatTextField ws={ws.ws.clone()} />
+            <EntranceBackButton />
+            if first_visit.0 {
+                <FirstVisitModal />
+            }
         </div>
     }
 }

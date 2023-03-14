@@ -24,3 +24,7 @@ pub const MOVE_SPEED_MS: u32 = 500;
 pub const MOVING_DISTANCE: f64 = 50.0;
 pub const CHARA_SIZE: u32 = 64;
 pub const CHARA_OFFSET: u32 = CHARA_SIZE / 2;
+// w-[2000px] h-[1500px]
+pub const WORLD_SIZE: (u32, u32) = (2000, 1500);
+pub static WORLD_SIZE_CLASS_W: Lazy<String> = Lazy::new(|| format!("w-[{}px]", WORLD_SIZE.0));
+pub static WORLD_SIZE_CLASS_H: Lazy<String> = Lazy::new(|| format!("h-[{}px]", WORLD_SIZE.1));
