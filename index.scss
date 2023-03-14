@@ -19,9 +19,28 @@ img {
 
 $stage_radius: 1000px;
 $stage_height: 100px;
-$stage_top: -50px;
-$stage_left: 50px;
-$stage_color: #8ba516;
+$stage_top: 300px;
+$stage_left: 0px;
+$stage_color: #a3c800;
+
+.load {
+  width: 64px;
+  height: 64px;
+  background-image: url("https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nr7eduszgfzb/b/image-bucket/o/allo%2Frainbow-load64.jpg");
+  background-repeat: repeat;
+}
+
+.load-row {
+  height: 64px;
+  background-image: url("https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nr7eduszgfzb/b/image-bucket/o/allo%2Frainbow-load64.jpg");
+  background-repeat: repeat;
+}
+
+.load-col {
+  width: 64px;
+  background-image: url("https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nr7eduszgfzb/b/image-bucket/o/allo%2Frainbow-load64.jpg");
+  background-repeat: repeat;
+}
 
 .stage {
   margin: 30px;
@@ -29,7 +48,7 @@ $stage_color: #8ba516;
   height: $stage_radius;
   position: relative;
   transform-style: preserve-3d;
-  transform: rotateX(-25deg) rotateY(0);
+  transform: rotateX(-10deg) rotateY(0);
   /* 	background: rgba(0, 0, 0, 0.4); */
 }
 
@@ -39,7 +58,9 @@ $stage_color: #8ba516;
   position: absolute;
   top: $stage_top;
   left: $stage_left;
-  background: $stage_color;
+  // background: $stage_color;
+  background: linear-gradient(to top, $stage_color, darken($stage_color, 5%), darken($stage_color, 15%));
+  // background-image: url("https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nr7eduszgfzb/b/image-bucket/o/allo%2Fstage-top.png");
   border-radius: 50%;
   transform: rotateX(90deg);
 }
@@ -83,7 +104,8 @@ $stage_color: #8ba516;
   position: absolute;
   top: calc($stage_radius / 2 + $stage_top);
   left: $stage_left;
-  background: lighten($color: $stage_color, $amount: 15%);
+  // background: lighten($color: $stage_color, $amount: 15%);
+  background: linear-gradient(to top, lighten($color: $stage_color, $amount: 15%), darken($stage_color, 5%), darken($stage_color, 15%));
   transform-origin: right;
 }
 

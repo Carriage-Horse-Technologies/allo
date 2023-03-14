@@ -25,8 +25,8 @@ pub const MOVING_DISTANCE: f64 = 50.0;
 pub const CHARA_SIZE: u32 = 64;
 pub const CHARA_OFFSET: u32 = CHARA_SIZE / 2;
 pub const SCROLL_PX: f64 = 10.;
-// w-[2000px] h-[2000px]
-pub const WORLD_SIZE: (u32, u32) = (2000, 2000);
+// w-[2500px] h-[2500px]
+pub const WORLD_SIZE: (u32, u32) = (2500, 2500);
 pub const GRADIENT_COLOR: Lazy<Vec<&str>> = Lazy::new(|| {
     vec![
         "#FF0000", "#FF7C00", "#FFFF00", "#5DFF00", "#00FFB6", "#00D1FF", "#002EFF", "#7800FF",

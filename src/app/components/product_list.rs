@@ -7,7 +7,7 @@ use yewdux::prelude::use_store;
 
 use crate::{
     app::{
-        components::{modals::Modal, product::Product},
+        components::{modals::Modal, product::Product, stage::Stage},
         models::{PageOffsetDomRect, ProductInfo},
         states::{CollisionState, ModalState},
     },
@@ -95,27 +95,52 @@ pub(crate) fn ProductList(props: &ProductListProps) -> Html {
 
     html! {
         <div>
-            <div class={classes!("flex", "flex-row", "justify-center", "items-center")}>
+            <div class={classes!("flex", "flex-row", "justify-center", "items-center", "mb-[170px]")}>
                 <img class={classes!("object-contain", "-scale-x-100")} src="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nr7eduszgfzb/b/image-bucket/o/allo%2Fcracker.gif" alt="" />
-                <div class={classes!("flex", "flex-col", "justify-center", "items-center", "mb-[100px]")}>
+                <div class={classes!("flex", "flex-col", "justify-center", "items-center", "mb-[100px]", "relative")}>
                     <Product node_ref={new_product_node} classes={classes!("mt-[300px]",
-                                "bg-gradient-to-r", "from-[#6080B0]", "via-[#08DCF9]", "to-[#FF2775]", "p-2", "m-0"
+                                "bg-gradient-to-r", "from-[#6080B0]", "via-[#08DCF9]", "to-[#FF2775]", "p-2", "m-0",
+                                "z-[600]"
                                 )} product_info={NEW_PRODUCT_INFO} rect_map={products_rect_map.clone()} new={true} />
+                    <Stage classes={classes!("absolute", "z-[500]")} />
                 </div>
                 <img class={classes!("object-contain")} src="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nr7eduszgfzb/b/image-bucket/o/allo%2Fcracker.gif" alt="" />
             </div>
+            <div class={classes!("relative", "border-8", "border-picture-frame", "m-5")}>
+                <h2 class={classes!("text-center", "text-4xl", "select-none", "text-light-text",
+                            "relative", "-top-[28px]", "bg-white", "w-fit", "rounded-full", "p-2",
+                            "mx-auto")}>
+                    {"歴代のプロダクトたち"}
+                </h2>
+                <div class={classes!("flex", "flex-col", "justify-items-center", "items-center")}>
+                    <div class={classes!("flex", "flex-row", "justify-items-center", "items-center")}>
+                        <Product product_info={(PAST_PRODUCT_INFO_LIST[0]).clone()} rect_map={products_rect_map.clone()} />
+                        <div class={classes!("bg-rainbow-load-bg-img", "bg-repeat", "w-[64px]", "self-stretch", "select_none")} >{"."}</div>
+                        <Product product_info={(PAST_PRODUCT_INFO_LIST[1]).clone()} rect_map={products_rect_map.clone()} />
+                        <div class={classes!("bg-rainbow-load-bg-img", "bg-repeat", "w-[64px]", "self-stretch", "select_none")} >{"."}</div>
+                        <Product product_info={(PAST_PRODUCT_INFO_LIST[2]).clone()} rect_map={products_rect_map.clone()} />
+                    </div>
+                    <div class={classes!("bg-rainbow-load-bg-img", "bg-repeat", "h-[64px]", "self-stretch", "select_none")} >{"."}</div>
+                    <div class={classes!("flex", "flex-row", "justify-items-center", "items-center")}>
+                        <Product product_info={(PAST_PRODUCT_INFO_LIST[3]).clone()} rect_map={products_rect_map.clone()} />
+                        <div class={classes!("bg-rainbow-load-bg-img", "bg-repeat", "w-[64px]", "self-stretch", "select_none")} >{"."}</div>
+                        <Product product_info={(PAST_PRODUCT_INFO_LIST[4]).clone()} rect_map={products_rect_map.clone()} />
+                        <div class={classes!("bg-rainbow-load-bg-img", "bg-repeat", "w-[64px]", "self-stretch", "select_none")} >{"."}</div>
+                        <Product product_info={(PAST_PRODUCT_INFO_LIST[5]).clone()} rect_map={products_rect_map.clone()} />
+                    </div>
+                    // <div class={classes!("container", "mx-auto", "flex", "flex-row", "justify-items-center", "items-center", "self-stretch")}>
+                    //     <div class={classes!("bg-rainbow-load-bg-img", "bg-repeat", "h-[64px]", "self-stretch", "select_none")} >{"."}</div>
+                    //     <div class={classes!("bg-rainbow-load-bg-img", "bg-repeat", "h-[64px]", "self-stretch", "select_none")} >{"."}</div>
+                    //     <div class={classes!("bg-rainbow-load-bg-img", "bg-repeat", "h-[64px]", "self-stretch", "select_none")} >{"."}</div>
+                    //     <div class={classes!("bg-rainbow-load-bg-img", "bg-repeat", "h-[64px]", "self-stretch", "select_none")} >{"."}</div>
+                    // </div>
 
-            <div class={classes!("grid", "grid-cols-3", "justify-items-center", "place-content-around", "place-items-center")}>
-                {
-                    for PAST_PRODUCT_INFO_LIST.iter().map(|info| {
-                        html! {
-                            <Product product_info={(*info).clone()} rect_map={products_rect_map.clone()} />
-                        }
-                    })
-                }
-                if modal_state.is_display {
-                    <Modal />
-                }
+
+
+                    if modal_state.is_display {
+                        <Modal />
+                    }
+                </div>
             </div>
         </div>
     }

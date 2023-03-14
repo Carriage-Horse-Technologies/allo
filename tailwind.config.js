@@ -82,6 +82,8 @@ module.exports = {
       },
       backgroundImage: {
         'content-background-img': "url('https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nr7eduszgfzb/b/image-bucket/o/allo%2Fallo-bg.png')",
+        "tile-bg-img": "url(https://online.futabazemi.work/unity/CosmoWall.jpg)",
+        "rainbow-load-bg-img": "url(https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nr7eduszgfzb/b/image-bucket/o/allo%2Frainbow-load64.jpg)",
       }
     },
   },
