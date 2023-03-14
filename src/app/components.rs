@@ -16,6 +16,7 @@ pub(crate) mod myself;
 pub(crate) mod other_character;
 pub(crate) mod product;
 pub(crate) mod product_list;
+pub(crate) mod stage;
 
 fn move_node<T, U>(node: &NodeRef, x: &T, y: &U, duration_ms: u32) -> Result<(), JsValue>
 where

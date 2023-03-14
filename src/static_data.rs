@@ -3,8 +3,8 @@ use crate::app::models::ProductInfo;
 pub(crate) const NEW_PRODUCT_INFO: ProductInfo = ProductInfo {
     title: "まさかり",
     url: "https://masakari.yukinissie.com/",
-    topaz_url: "https://masakari.yukinissie.com/",
-    img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01GDGDQ2DYKE527HP55Z0R008H.png&w=1920&q=75"
+    topaz_url: "https://topaz.dev/projects/3cb8f7e2be54f7083f99",
+    img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01GVG1E3KT3382HEYQHD7WA0R5.gif&w=3840&q=75"
 };
 
 pub(crate) const PAST_PRODUCT_INFO_LIST: [ProductInfo; 6] = [

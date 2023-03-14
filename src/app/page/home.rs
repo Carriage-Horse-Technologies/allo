@@ -1,5 +1,5 @@
 use yew::prelude::*;
-use yew_hooks::{use_list, use_websocket_with_options, UseWebSocketOptions};
+use yew_hooks::{use_list, use_scroll, use_websocket_with_options, UseWebSocketOptions};
 use yewdux::prelude::{use_store, use_store_value};
 
 use crate::{

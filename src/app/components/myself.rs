@@ -163,8 +163,7 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                             move_node(&balloon_node_ref, x, y, MOVE_SPEED_MS)
                                 .expect("Failed to balloon_node_ref move_node");
                             auto_scroll(&rect, MOVING_DISTANCE);
-                        }
-                        if code == "KeyW" || code == "ArrowUp" {
+                        } else if code == "KeyW" || code == "ArrowUp" {
                             e.prevent_default();
                             let x = &(page_offset_dom_rect.left() + CHARA_OFFSET as f64);
                             let y = &(page_offset_dom_rect.top() + CHARA_OFFSET as f64
@@ -176,8 +175,7 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                             move_node(&balloon_node_ref, x, y, MOVE_SPEED_MS)
                                 .expect("Failed to balloon_node_ref move_node");
                             auto_scroll(&rect, MOVING_DISTANCE);
-                        }
-                        if code == "KeyD" || code == "ArrowRight" {
+                        } else if code == "KeyD" || code == "ArrowRight" {
                             e.prevent_default();
                             let x = &(page_offset_dom_rect.left()
                                 + CHARA_OFFSET as f64
@@ -190,8 +188,7 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                             move_node(&balloon_node_ref, x, y, MOVE_SPEED_MS)
                                 .expect("Failed to balloon_node_ref move_node");
                             auto_scroll(&rect, MOVING_DISTANCE);
-                        }
-                        if code == "KeyS" || code == "ArrowDown" {
+                        } else if code == "KeyS" || code == "ArrowDown" {
                             e.prevent_default();
                             let x = &(page_offset_dom_rect.left() + CHARA_OFFSET as f64);
                             let y = &(page_offset_dom_rect.top()

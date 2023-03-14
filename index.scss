@@ -16,3 +16,217 @@
 img {
   -webkit-user-drag: none;
 }
+
+$stage_radius: 1000px;
+$stage_height: 100px;
+$stage_top: -50px;
+$stage_left: 50px;
+$stage_color: #8ba516;
+
+.stage {
+  margin: 30px;
+  width: $stage_radius;
+  height: $stage_radius;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(-25deg) rotateY(0);
+  /* 	background: rgba(0, 0, 0, 0.4); */
+}
+
+.stage .top {
+  width: $stage_radius;
+  height: $stage_radius;
+  position: absolute;
+  top: $stage_top;
+  left: $stage_left;
+  background: $stage_color;
+  border-radius: 50%;
+  transform: rotateX(90deg);
+}
+
+.stage .top-back {
+  width: $stage_radius;
+  height: $stage_radius;
+  position: absolute;
+  top: calc($stage_top + 1px);
+  left: $stage_left;
+  background: lighten($color: $stage_color, $amount: 15%);
+  border-radius: 50%;
+  transform: rotateX(90deg);
+}
+
+.stage .bottom {
+  width: $stage_radius;
+  height: $stage_radius;
+  position: absolute;
+  top: calc($stage_top + $stage_height);
+  left: $stage_left;
+  background: darken($color: $stage_color, $amount: 15%);
+  border-radius: 50%;
+  transform: rotateX(90deg);
+}
+
+.stage .bottom-back {
+  width: $stage_radius;
+  height: $stage_radius;
+  position: absolute;
+  top: calc($stage_top + $stage_height - 1px);
+  left: $stage_left;
+  background: lighten($color: $stage_color, $amount: 15%);
+  border-radius: 50%;
+  transform: rotateX(90deg);
+}
+
+.stage .side-group div {
+  width: calc($stage_radius / 2);
+  height: $stage_height;
+  position: absolute;
+  top: calc($stage_radius / 2 + $stage_top);
+  left: $stage_left;
+  background: lighten($color: $stage_color, $amount: 15%);
+  transform-origin: right;
+}
+
+.side-group div:nth-child(1) {
+  transform: rotateY(0deg);
+}
+
+.side-group div:nth-child(2) {
+  transform: rotateY(10deg);
+}
+
+.side-group div:nth-child(3) {
+  transform: rotateY(20deg);
+}
+
+.side-group div:nth-child(4) {
+  transform: rotateY(30deg);
+}
+
+.side-group div:nth-child(5) {
+  transform: rotateY(40deg);
+}
+
+.side-group div:nth-child(6) {
+  transform: rotateY(50deg);
+}
+
+.side-group div:nth-child(7) {
+  transform: rotateY(60deg);
+}
+
+.side-group div:nth-child(8) {
+  transform: rotateY(70deg);
+}
+
+.side-group div:nth-child(9) {
+  transform: rotateY(80deg);
+}
+
+.side-group div:nth-child(10) {
+  transform: rotateY(90deg);
+}
+
+.side-group div:nth-child(11) {
+  transform: rotateY(100deg);
+}
+
+.side-group div:nth-child(12) {
+  transform: rotateY(110deg);
+}
+
+.side-group div:nth-child(13) {
+  transform: rotateY(120deg);
+}
+
+.side-group div:nth-child(14) {
+  transform: rotateY(130deg);
+}
+
+.side-group div:nth-child(15) {
+  transform: rotateY(140deg);
+}
+
+.side-group div:nth-child(16) {
+  transform: rotateY(150deg);
+}
+
+.side-group div:nth-child(17) {
+  transform: rotateY(160deg);
+}
+
+.side-group div:nth-child(18) {
+  transform: rotateY(170deg);
+}
+
+.side-group div:nth-child(19) {
+  transform: rotateY(180deg);
+}
+
+.side-group div:nth-child(20) {
+  transform: rotateY(190deg);
+}
+
+.side-group div:nth-child(21) {
+  transform: rotateY(200deg);
+}
+
+.side-group div:nth-child(22) {
+  transform: rotateY(210deg);
+}
+
+.side-group div:nth-child(23) {
+  transform: rotateY(220deg);
+}
+
+.side-group div:nth-child(24) {
+  transform: rotateY(230deg);
+}
+
+.side-group div:nth-child(25) {
+  transform: rotateY(240deg);
+}
+
+.side-group div:nth-child(26) {
+  transform: rotateY(250deg);
+}
+
+.side-group div:nth-child(27) {
+  transform: rotateY(260deg);
+}
+
+.side-group div:nth-child(28) {
+  transform: rotateY(270deg);
+}
+
+.side-group div:nth-child(29) {
+  transform: rotateY(280deg);
+}
+
+.side-group div:nth-child(30) {
+  transform: rotateY(290deg);
+}
+
+.side-group div:nth-child(31) {
+  transform: rotateY(300deg);
+}
+
+.side-group div:nth-child(32) {
+  transform: rotateY(310deg);
+}
+
+.side-group div:nth-child(33) {
+  transform: rotateY(320deg);
+}
+
+.side-group div:nth-child(34) {
+  transform: rotateY(330deg);
+}
+
+.side-group div:nth-child(35) {
+  transform: rotateY(340deg);
+}
+
+.side-group div:nth-child(36) {
+  transform: rotateY(350deg);
+}

@@ -95,9 +95,16 @@ pub(crate) fn ProductList(props: &ProductListProps) -> Html {
 
     html! {
         <div>
-            <Product node_ref={new_product_node} classes={classes!("container", "mx-auto", "mt-[300px]", "mb-[100px]",
-                            "bg-gradient-to-r", "from-[#6080B0]", "via-[#08DCF9]", "to-[#FF2775]", "p-2"
-                            )} product_info={NEW_PRODUCT_INFO} rect_map={products_rect_map.clone()} new={true} />
+            <div class={classes!("flex", "flex-row", "justify-center", "items-center")}>
+                <img class={classes!("object-contain", "-scale-x-100")} src="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nr7eduszgfzb/b/image-bucket/o/allo%2Fcracker.gif" alt="" />
+                <div class={classes!("flex", "flex-col", "justify-center", "items-center", "mb-[100px]")}>
+                    <Product node_ref={new_product_node} classes={classes!("mt-[300px]",
+                                "bg-gradient-to-r", "from-[#6080B0]", "via-[#08DCF9]", "to-[#FF2775]", "p-2", "m-0"
+                                )} product_info={NEW_PRODUCT_INFO} rect_map={products_rect_map.clone()} new={true} />
+                </div>
+                <img class={classes!("object-contain")} src="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nr7eduszgfzb/b/image-bucket/o/allo%2Fcracker.gif" alt="" />
+            </div>
+
             <div class={classes!("grid", "grid-cols-3", "justify-items-center", "place-content-around", "place-items-center")}>
                 {
                     for PAST_PRODUCT_INFO_LIST.iter().map(|info| {

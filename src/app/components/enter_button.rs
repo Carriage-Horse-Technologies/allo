@@ -4,7 +4,7 @@ use yew::prelude::*;
 
 use yewdux::prelude::use_store_value;
 
-use crate::app::states::CollisionState;
+use crate::app::states::{ChatTextFieldState, CollisionState};
 
 #[derive(PartialEq, Properties)]
 pub(crate) struct EnterButtonProps {
@@ -18,6 +18,7 @@ pub(crate) fn EnterButton(props: &EnterButtonProps) -> Html {
 
     let collision_state = use_store_value::<CollisionState>();
     let button_node = use_node_ref();
+    let chat_text_field_onfocus = use_store_value::<ChatTextFieldState>();
 
     let onclick = {
         let href = href.clone().unwrap_or_default();
@@ -39,14 +40,18 @@ pub(crate) fn EnterButton(props: &EnterButtonProps) -> Html {
     {
         // Enterキーでonclick発火
         let button_node = button_node.clone();
+        let chat_text_field_onfocus = chat_text_field_onfocus.clone();
         use_effect_with_deps(
-            move |button_node| {
+            move |(button_node, chat_text_field_onfocus)| {
                 let button_node = button_node.clone();
                 let document = web_sys::window().unwrap().document().unwrap();
+                let chat_text_field_onfocus = chat_text_field_onfocus.clone();
 
                 let keydown_listener = Closure::<dyn Fn(KeyboardEvent)>::wrap(Box::new({
                     move |e| {
-                        if e.code() == "Enter" || e.code() == "NumpadEnter" {
+                        if !chat_text_field_onfocus.onfocus
+                            && (e.code() == "Enter" || e.code() == "NumpadEnter")
+                        {
                             let button_element = button_node
                                 .cast::<HtmlButtonElement>()
                                 .expect("Failed to cast HtmlButtonElement");
@@ -69,7 +74,7 @@ pub(crate) fn EnterButton(props: &EnterButtonProps) -> Html {
 
                 register_listener
             },
-            button_node,
+            (button_node, chat_text_field_onfocus),
         );
     }
 

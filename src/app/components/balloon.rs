@@ -26,7 +26,7 @@ pub(crate) fn Balloon(props: &BalloonProps) -> Html {
                     "-top-[155px]", "-left-[100px]",
                     "w-[200px]", "h-[100px]",
                     "transform-gpu", "translate-x-[50vw]", "translate-y-[50vh]",
-                    "z-900",
+                    "z-[900]",
                     "after:content-['']",
                     "after:absolute",
                     "after:w-0",
