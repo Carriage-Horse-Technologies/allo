@@ -13,7 +13,7 @@ use crate::{
     my_utils::check_collision_with_page_offset_dom_rect,
 };
 
-const PRODUCT_INFO_LIST: [ProductInfo; 5] = [
+const PRODUCT_INFO_LIST: [ProductInfo; 7] = [
     ProductInfo {
         title: "RED",
         url: "https://games.jyogi.net/",
@@ -44,6 +44,18 @@ const PRODUCT_INFO_LIST: [ProductInfo; 5] = [
         topaz_url: "https://topaz.dev/projects/207c286d525ad968e969",
         img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01FAA15EKREPQ82JT53QQ5YGEW.png&w=3840&q=75"
     },
+    ProductInfo {
+        title: "Meguru Cosmos",
+        url: "https://lonely1.yukinissie.com/",
+        topaz_url: "https://topaz.dev/projects/d41a0662268f7a1aca4a",
+        img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01GVESENFPRVRG50GS3WQ6ETQA.png&w=3840&q=75"
+    },
+    ProductInfo {
+        title: "Wa:talk",
+        url: "https://watalk.yukinissie.com/",
+        topaz_url: "https://topaz.dev/projects/b319ba459e32910d7015",
+        img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01GVET9N3Q8P879HEP6V3R680R.png&w=3840&q=75"
+    }
 ];
 
 #[derive(PartialEq, Properties)]
@@ -105,7 +117,7 @@ pub(crate) fn ProductList(props: &ProductListProps) -> Html {
     }
 
     html! {
-        <div class={classes!("grid", "grid-cols-2", "justify-items-center", "place-content-around", "place-items-center",
+        <div class={classes!("grid", "grid-cols-3", "justify-items-center", "place-content-around", "place-items-center",
                             )}>
             {
                 for PRODUCT_INFO_LIST.iter().map(|info| {

@@ -48,3 +48,13 @@ pub(crate) struct ModalState {
 pub(crate) struct ChatTextFieldState {
     pub(crate) onfocus: bool,
 }
+
+#[derive(Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+#[store(storage = "local")]
+pub(crate) struct FirstVisitState(pub(crate) bool);
+
+impl Default for FirstVisitState {
+    fn default() -> Self {
+        FirstVisitState(true)
+    }
+}

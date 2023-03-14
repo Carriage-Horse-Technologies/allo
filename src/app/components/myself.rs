@@ -1,7 +1,7 @@
 use std::{borrow::Borrow, cell::RefCell, rc::Rc};
 
 use wasm_bindgen::{prelude::Closure, JsCast};
-use web_sys::{HtmlElement, WebSocket};
+use web_sys::{DomRect, HtmlElement, WebSocket};
 use yew::prelude::*;
 use yew_hooks::{use_bool_toggle, use_interval};
 use yewdux::prelude::{use_store, use_store_value};
@@ -12,7 +12,7 @@ use crate::{
         models::{LocationType, MyLocation, PageOffsetDomRect},
         states::{ChatTextFieldState, ChatTextHashState, ChatTextState, Username},
     },
-    settings::{self, CHARA_OFFSET, MOVE_SPEED_MS, MOVING_DISTANCE},
+    settings::{self, CHARA_OFFSET, CHARA_SIZE, MOVE_SPEED_MS, MOVING_DISTANCE, WORLD_SIZE},
 };
 
 use super::move_node;
@@ -88,29 +88,7 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                                 rect.y()
                             );
 
-                            // キャラが画面端にいるときは自動スクロール
-                            let x_rate = rect.x()
-                                / win
-                                    .inner_width()
-                                    .unwrap_or_default()
-                                    .as_f64()
-                                    .unwrap_or_default();
-                            let y_rate = rect.y()
-                                / win
-                                    .inner_height()
-                                    .unwrap_or_default()
-                                    .as_f64()
-                                    .unwrap_or_default();
-                            if x_rate < 0.1 {
-                                win.scroll_by_with_x_and_y(-10., 0.);
-                            } else if x_rate > 0.9 {
-                                win.scroll_by_with_x_and_y(10., 0.);
-                            }
-                            if y_rate < 0.1 {
-                                win.scroll_by_with_x_and_y(0., -10.);
-                            } else if y_rate > 0.9 {
-                                win.scroll_by_with_x_and_y(0., 10.);
-                            }
+                            auto_scroll(&rect, 10.);
 
                             let page_offset_dom_rect =
                                 PageOffsetDomRect::from_dom_rect_and_page_offset(
@@ -182,6 +160,7 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                             // 吹き出しNodeの移動
                             move_node(&balloon_node_ref, x, y, MOVE_SPEED_MS)
                                 .expect("Failed to balloon_node_ref move_node");
+                            auto_scroll(&rect, MOVING_DISTANCE);
                         }
                         if code == "KeyW" || code == "ArrowUp" {
                             e.prevent_default();
@@ -194,6 +173,7 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                             // 吹き出しNodeの移動
                             move_node(&balloon_node_ref, x, y, MOVE_SPEED_MS)
                                 .expect("Failed to balloon_node_ref move_node");
+                            auto_scroll(&rect, MOVING_DISTANCE);
                         }
                         if code == "KeyD" || code == "ArrowRight" {
                             e.prevent_default();
@@ -207,6 +187,7 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                             // 吹き出しNodeの移動
                             move_node(&balloon_node_ref, x, y, MOVE_SPEED_MS)
                                 .expect("Failed to balloon_node_ref move_node");
+                            auto_scroll(&rect, MOVING_DISTANCE);
                         }
                         if code == "KeyS" || code == "ArrowDown" {
                             e.prevent_default();
@@ -220,6 +201,7 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                             // 吹き出しNodeの移動
                             move_node(&balloon_node_ref, x, y, MOVE_SPEED_MS)
                                 .expect("Failed to balloon_node_ref move_node");
+                            auto_scroll(&rect, MOVING_DISTANCE);
                         }
 
                         myself_rect.set(Some(page_offset_dom_rect));
@@ -256,7 +238,56 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
         );
     }
 
-    {}
+    {
+        // 画面外に行かないようにする処理
+        let my_character_node_ref = my_character_node_ref.clone();
+        let myself_rect = myself_rect.clone();
+        use_effect_with_deps(
+            move |myself_rect| {
+                if let Some(myself_rect) = (*myself_rect).as_ref() {
+                    log::debug!("myself_rect {} {}", myself_rect.left(), myself_rect.top());
+
+                    if myself_rect.left() <= 0. {
+                        move_node(
+                            &my_character_node_ref,
+                            &(0 + CHARA_SIZE),
+                            &(myself_rect.top() + CHARA_OFFSET as f64),
+                            50,
+                        )
+                        .expect("Failed to move_node");
+                    }
+                    if myself_rect.right() >= WORLD_SIZE.0 as f64 {
+                        move_node(
+                            &my_character_node_ref,
+                            &(WORLD_SIZE.0 - CHARA_SIZE),
+                            &(myself_rect.top() + CHARA_OFFSET as f64),
+                            50,
+                        )
+                        .expect("Failed to move_node");
+                    }
+                    if myself_rect.top() <= 0. {
+                        move_node(
+                            &my_character_node_ref,
+                            &(myself_rect.left() + CHARA_OFFSET as f64),
+                            &(0 + CHARA_SIZE),
+                            50,
+                        )
+                        .expect("Failed to move_node");
+                    }
+                    if myself_rect.bottom() >= WORLD_SIZE.1 as f64 {
+                        move_node(
+                            &my_character_node_ref,
+                            &(myself_rect.left() + CHARA_OFFSET as f64),
+                            &(WORLD_SIZE.1 - CHARA_SIZE),
+                            50,
+                        )
+                        .expect("Failed to move_node");
+                    }
+                }
+            },
+            myself_rect,
+        );
+    }
 
     use_interval(
         {
@@ -333,5 +364,32 @@ fn send_my_pos(
         );
     } else {
         log::debug!("Success websocket send");
+    }
+}
+
+/// キャラが画面端にいるときは自動スクロールする
+fn auto_scroll(rect: &DomRect, moving_px: f64) {
+    let win = web_sys::window().unwrap();
+    let x_rate = rect.x()
+        / win
+            .inner_width()
+            .unwrap_or_default()
+            .as_f64()
+            .unwrap_or_default();
+    let y_rate = rect.y()
+        / win
+            .inner_height()
+            .unwrap_or_default()
+            .as_f64()
+            .unwrap_or_default();
+    if x_rate < 0.1 {
+        win.scroll_by_with_x_and_y(-moving_px, 0.);
+    } else if x_rate > 0.9 {
+        win.scroll_by_with_x_and_y(moving_px, 0.);
+    }
+    if y_rate < 0.1 {
+        win.scroll_by_with_x_and_y(0., -moving_px);
+    } else if y_rate > 0.9 {
+        win.scroll_by_with_x_and_y(0., moving_px);
     }
 }
