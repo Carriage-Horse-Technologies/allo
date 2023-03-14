@@ -135,9 +135,9 @@ pub fn Home(props: &HomeProps) -> Html {
             <EnterButton />
             <ChatTextField ws={ws.ws.clone()} />
             <EntranceBackButton />
-            if first_visit.0 {
-                <FirstVisitModal />
-            }
+            // if first_visit.0 {
+            //     <FirstVisitModal />
+            // }
             if easter_egg_modal_state.0 {
                 <EasterEggModal />
             }
