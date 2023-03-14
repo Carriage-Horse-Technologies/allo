@@ -1,21 +1,22 @@
 use yew::prelude::*;
 use yewdux::prelude::use_store;
 
-use crate::app::states::FirstVisitState;
+use crate::app::states::EasterEggModalState;
 
 #[derive(PartialEq, Properties)]
-pub struct FirstVisitModalProps {}
+pub struct EasterEggModalProps {}
 
 #[function_component]
-pub fn FirstVisitModal(props: &FirstVisitModalProps) -> Html {
-    let FirstVisitModalProps {} = props;
+pub fn EasterEggModal(props: &EasterEggModalProps) -> Html {
+    let EasterEggModalProps {} = props;
 
-    let (_, first_visit_dispatch) = use_store::<FirstVisitState>();
+    let (easter_egg_modal_state, easter_egg_modal_state_dispatch) =
+        use_store::<EasterEggModalState>();
 
     let onclick = {
-        let first_visit_dispatch = first_visit_dispatch.clone();
+        let easter_egg_modal_state_dispatch = easter_egg_modal_state_dispatch.clone();
         Callback::from(move |_| {
-            first_visit_dispatch.reduce(|_| FirstVisitState(false).into());
+            easter_egg_modal_state_dispatch.reduce(|_| EasterEggModalState::default().into());
         })
     };
 
@@ -27,7 +28,7 @@ pub fn FirstVisitModal(props: &FirstVisitModalProps) -> Html {
                 <div class="flex items-end justify-center p-4 text-center sm:items-center sm:p-0">
                     <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-[560px] text-light-text">
                         <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row justify-between items-center sm:px-6">
-                            <p>{"チュートリアル"}</p>
+                            <p>{"ニッシー☆ 卒業おめでとう！"}</p>
                             <button type="button" onclick={onclick} class="flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="20" height="20" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -36,8 +37,10 @@ pub fn FirstVisitModal(props: &FirstVisitModalProps) -> Html {
                                 </svg>
                             </button>
                         </div>
-                        <div class="w-[560px] h-[315px]">
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/75YnJ_3289g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen={true}></iframe>
+                        <div class="w-[560px] h-[315px] flex flex-row justify-center items-center">
+                            <img class={classes!("object-contain", "-scale-x-100")} width="200" height="200" src="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nr7eduszgfzb/b/image-bucket/o/allo%2Fcracker.gif" alt="" />
+                            <img class="rounded-full" src="https://pbs.twimg.com/profile_images/1521499615010463747/_s_S-96Q_400x400.jpg" width="156" height="156" alt="" />
+                            <img class={classes!("object-contain")} width="200" height="200" src="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nr7eduszgfzb/b/image-bucket/o/allo%2Fcracker.gif" alt="" />
                         </div>
                     </div>
                 </div>

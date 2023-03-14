@@ -13,7 +13,8 @@ use crate::{
         states::{ChatTextFieldState, ChatTextHashState, ChatTextState, Username},
     },
     settings::{
-        self, CHARA_OFFSET, CHARA_SIZE, MOVE_SPEED_MS, MOVING_DISTANCE, SCROLL_PX, WORLD_SIZE,
+        self, CHARA_OFFSET, CHARA_SIZE, KEY_MOVE_SPEED_MS, MOVE_SPEED_MS, MOVING_DISTANCE,
+        SCROLL_PX, WORLD_SIZE,
     },
 };
 
@@ -157,10 +158,10 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                                 - MOVING_DISTANCE);
                             let y = &(page_offset_dom_rect.top() + CHARA_OFFSET as f64);
                             // myself Nodeの移動
-                            move_node(&my_character_node_ref, x, y, MOVE_SPEED_MS)
+                            move_node(&my_character_node_ref, x, y, KEY_MOVE_SPEED_MS)
                                 .expect("Failed to my_character_node_ref move_node");
                             // 吹き出しNodeの移動
-                            move_node(&balloon_node_ref, x, y, MOVE_SPEED_MS)
+                            move_node(&balloon_node_ref, x, y, KEY_MOVE_SPEED_MS)
                                 .expect("Failed to balloon_node_ref move_node");
                             auto_scroll(&rect, MOVING_DISTANCE);
                         } else if code == "KeyW" || code == "ArrowUp" {
@@ -169,10 +170,10 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                             let y = &(page_offset_dom_rect.top() + CHARA_OFFSET as f64
                                 - MOVING_DISTANCE);
                             // myself Nodeの移動
-                            move_node(&my_character_node_ref, x, y, MOVE_SPEED_MS)
+                            move_node(&my_character_node_ref, x, y, KEY_MOVE_SPEED_MS)
                                 .expect("Failed to my_character_node_ref move_node");
                             // 吹き出しNodeの移動
-                            move_node(&balloon_node_ref, x, y, MOVE_SPEED_MS)
+                            move_node(&balloon_node_ref, x, y, KEY_MOVE_SPEED_MS)
                                 .expect("Failed to balloon_node_ref move_node");
                             auto_scroll(&rect, MOVING_DISTANCE);
                         } else if code == "KeyD" || code == "ArrowRight" {
@@ -182,10 +183,10 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                                 + MOVING_DISTANCE);
                             let y = &(page_offset_dom_rect.top() + CHARA_OFFSET as f64);
                             // myself Nodeの移動
-                            move_node(&my_character_node_ref, x, y, MOVE_SPEED_MS)
+                            move_node(&my_character_node_ref, x, y, KEY_MOVE_SPEED_MS)
                                 .expect("Failed to my_character_node_ref move_node");
                             // 吹き出しNodeの移動
-                            move_node(&balloon_node_ref, x, y, MOVE_SPEED_MS)
+                            move_node(&balloon_node_ref, x, y, KEY_MOVE_SPEED_MS)
                                 .expect("Failed to balloon_node_ref move_node");
                             auto_scroll(&rect, MOVING_DISTANCE);
                         } else if code == "KeyS" || code == "ArrowDown" {
@@ -195,10 +196,10 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                                 + CHARA_OFFSET as f64
                                 + MOVING_DISTANCE);
                             // myself Nodeの移動
-                            move_node(&my_character_node_ref, x, y, MOVE_SPEED_MS)
+                            move_node(&my_character_node_ref, x, y, KEY_MOVE_SPEED_MS)
                                 .expect("Failed to my_character_node_ref move_node");
                             // 吹き出しNodeの移動
-                            move_node(&balloon_node_ref, x, y, MOVE_SPEED_MS)
+                            move_node(&balloon_node_ref, x, y, KEY_MOVE_SPEED_MS)
                                 .expect("Failed to balloon_node_ref move_node");
                             auto_scroll(&rect, MOVING_DISTANCE);
                         }

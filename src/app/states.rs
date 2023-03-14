@@ -58,3 +58,6 @@ impl Default for FirstVisitState {
         FirstVisitState(true)
     }
 }
+
+#[derive(Default, Clone, PartialEq, Eq, Deserialize, Serialize, Store)]
+pub(crate) struct EasterEggModalState(pub(crate) bool);
