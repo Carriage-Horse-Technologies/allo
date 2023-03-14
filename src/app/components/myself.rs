@@ -12,7 +12,9 @@ use crate::{
         models::{LocationType, MyLocation, PageOffsetDomRect},
         states::{ChatTextFieldState, ChatTextHashState, ChatTextState, Username},
     },
-    settings::{self, CHARA_OFFSET, CHARA_SIZE, MOVE_SPEED_MS, MOVING_DISTANCE, WORLD_SIZE},
+    settings::{
+        self, CHARA_OFFSET, CHARA_SIZE, MOVE_SPEED_MS, MOVING_DISTANCE, SCROLL_PX, WORLD_SIZE,
+    },
 };
 
 use super::move_node;
@@ -88,7 +90,7 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                                 rect.y()
                             );
 
-                            auto_scroll(&rect, 10.);
+                            auto_scroll(&rect, SCROLL_PX);
 
                             let page_offset_dom_rect =
                                 PageOffsetDomRect::from_dom_rect_and_page_offset(
@@ -326,7 +328,7 @@ pub(crate) fn Myself(props: &MyselfProps) -> Html {
                     "-top-[32px]", "-left-[32px]",
                     "w-[64px]", "h-[64px]",
                     "rounded-full",
-                    "transform-gpu", "translate-x-[50vw]", "translate-y-[50vh]",
+                    "transform-gpu", "translate-x-[40vw]", "translate-y-[50vh]",
                     "z-[900]", "ease-out", "duration-200",
                     "overflow-hidden", "border-4", "border-green-500"
             )}>

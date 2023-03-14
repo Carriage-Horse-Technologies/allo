@@ -13,7 +13,7 @@ use crate::{
         models::{Character, CharacterLocations, ChatMessage, LocationType, PageOffsetDomRect},
         states::{ChatTextHashState, ChatTextState, FirstVisitState, Username},
     },
-    settings::{self, CONFIG, WORLD_SIZE_CLASS_H, WORLD_SIZE_CLASS_W},
+    settings::{self, CONFIG, WORLD_SIZE, WORLD_SIZE_CLASS_H, WORLD_SIZE_CLASS_W},
 };
 
 #[derive(PartialEq, Properties)]
@@ -96,6 +96,15 @@ pub fn Home(props: &HomeProps) -> Html {
             },
         )
     };
+
+    // 最初に中央付近にスクロールする
+    use_effect_with_deps(
+        |_| {
+            let win = web_sys::window().unwrap();
+            win.scroll_to_with_x_and_y(WORLD_SIZE.0 as f64 * 0.15, 100.);
+        },
+        (),
+    );
 
     if username.0.is_empty() {
         web_sys::window()
