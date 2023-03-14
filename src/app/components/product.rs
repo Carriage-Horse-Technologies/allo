@@ -1,6 +1,6 @@
 use web_sys::HtmlElement;
 use yew::prelude::*;
-use yew_hooks::UseMapHandle;
+use yew_hooks::{use_interval, UseMapHandle};
 use yewdux::prelude::use_store;
 
 use crate::app::{
@@ -14,6 +14,7 @@ pub(crate) struct ProductProps {
     pub(crate) rect_map: UseMapHandle<String, PageOffsetDomRect>,
     pub(crate) new: Option<bool>,
     pub(crate) classes: Option<Classes>,
+    pub(crate) node_ref: Option<NodeRef>,
 }
 
 #[function_component]
@@ -23,10 +24,14 @@ pub(crate) fn Product(props: &ProductProps) -> Html {
         rect_map,
         new,
         classes,
+        node_ref,
     } = props;
     let new = new.unwrap_or_default();
 
-    let node = use_node_ref();
+    let mut node = use_node_ref();
+    if let Some(node_ref_props) = node_ref {
+        node = node_ref_props.clone();
+    }
     let (_, modal_state_dispatch) = use_store::<ModalState>();
     {
         let title = product_info.title.clone();

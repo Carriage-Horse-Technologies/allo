@@ -1,7 +1,8 @@
 use std::collections::HashMap;
 
+use web_sys::{CssStyleDeclaration, HtmlElement};
 use yew::prelude::*;
-use yew_hooks::{use_map, UseMapHandle};
+use yew_hooks::{use_interval, use_map, UseMapHandle};
 use yewdux::prelude::use_store;
 
 use crate::{
@@ -26,6 +27,8 @@ pub(crate) fn ProductList(props: &ProductListProps) -> Html {
     let products_rect_map: UseMapHandle<String, PageOffsetDomRect> = use_map(HashMap::new());
     let (_collision_state, collision_state_dispatch) = use_store::<CollisionState>();
     let (modal_state, modal_state_dispatch) = use_store::<ModalState>();
+    let gradient_counter = use_state(|| 0);
+    let new_product_node = use_node_ref();
 
     {
         let myself_rect = myself_rect.clone();
@@ -74,9 +77,54 @@ pub(crate) fn ProductList(props: &ProductListProps) -> Html {
         );
     }
 
+    {
+        let gradient_counter = gradient_counter.clone();
+        let new_product_node = new_product_node.clone();
+        use_interval(
+            move || {
+                let gradient_color = vec!["#6080B0", "#08DCF9", "#FF2775"];
+                let new_product_element = new_product_node.cast::<HtmlElement>().unwrap();
+                let style = new_product_element.style();
+                // match *gradient_counter {
+                //     0 => style
+                //         .set_property(
+                //             "background",
+                //             &format!(
+                //                 "linear-gradient(to right, {}, {}, {})",
+                //                 gradient_color.0, gradient_color.1, gradient_color.2
+                //             ),
+                //         )
+                //         .unwrap(),
+                //     1 => style
+                //         .set_property(
+                //             "background",
+                //             &format!(
+                //                 "linear-gradient(to right, {}, {}, {})",
+                //                 gradient_color.1, gradient_color.2, gradient_color.0
+                //             ),
+                //         )
+                //         .unwrap(),
+                //     2 => style
+                //         .set_property(
+                //             "background",
+                //             &format!(
+                //                 "linear-gradient(to right, {}, {}, {})",
+                //                 gradient_color.2, gradient_color.0, gradient_color.1
+                //             ),
+                //         )
+                //         .unwrap(),
+                //     _ => (),
+                // }
+                set_gradient(&gradient_color, &style, *gradient_counter);
+                gradient_counter.set((*gradient_counter + 1) % gradient_color.len())
+            },
+            100,
+        );
+    }
+
     html! {
         <div>
-            <Product classes={classes!("container", "mx-auto", "mt-[300px]", "mb-[100px]",
+            <Product node_ref={new_product_node} classes={classes!("container", "mx-auto", "mt-[300px]", "mb-[100px]",
                             "bg-gradient-to-r", "from-[#6080B0]", "via-[#08DCF9]", "to-[#FF2775]", "p-2"
                             )} product_info={NEW_PRODUCT_INFO} rect_map={products_rect_map.clone()} new={true} />
             <div class={classes!("grid", "grid-cols-3", "justify-items-center", "place-content-around", "place-items-center")}>
@@ -93,4 +141,17 @@ pub(crate) fn ProductList(props: &ProductListProps) -> Html {
             </div>
         </div>
     }
+}
+
+fn set_gradient(gradient_color: &Vec<&str>, style: &CssStyleDeclaration, current_index: usize) {
+    let grad_num = gradient_color.len();
+    let mut property_value = "linear-gradient(to right, ".to_string();
+    for i in current_index..(current_index + grad_num) {
+        property_value.push_str(&gradient_color[i % grad_num]);
+        property_value.push_str(",");
+    }
+    let offset = property_value.rfind(",").unwrap();
+    property_value.replace_range(offset.., "");
+    property_value.push_str(")");
+    style.set_property("background", &property_value).unwrap();
 }
