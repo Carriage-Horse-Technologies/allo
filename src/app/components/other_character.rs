@@ -103,20 +103,20 @@ pub(crate) fn OtherCharacter(props: &OtherCharacterProps) -> Html {
             class={classes!("absolute", "select-none",
                     "-top-[32px]", "-left-[32px]",
                     "w-[64px]", "h-[64px]",
-                    "rounded-full",
                     "transform-gpu", "translate-x-[50vw]", "translate-y-[50vh]",
                     "z-[800]", "ease-character-move", "duration-700",
                     "overflow-hidden",
                     "hover:content",
-                    // "hover:overflow-visible",
-                    // "group"
+                    "hover:overflow-visible",
+                    "group",
+                    "flex", "flex-col", "items-center", "justify-center"
             )}>
-                <img src={github_user_icon_url(&character.user_id)} width=64 alt={character.user_id.clone()} />
-                // <span class="opacity-0 w-[74px] invisible rounded text-[12px]
-                // font-bold text-white py-1 bg-slate-600 top-11 -left-3
-                // group-hover:visible opacity-100 absolute">
-                //     {&character.user_id}
-                // </span>
+                <img class={classes!("rounded-full")} src={github_user_icon_url(&character.user_id)} width=64 alt={character.user_id.clone()} />
+                <span class="opacity-0 w-fit invisible rounded text-[12px]
+                font-bold text-white py-1 px-2 bg-slate-600 text-center top-[68px]
+                group-hover:visible opacity-100 absolute">
+                    {&character.user_id}
+                </span>
             </div>
             <Balloon node_ref={balloon_node_ref} is_display_balloon={is_display_balloon} is_myself={false}>
             {

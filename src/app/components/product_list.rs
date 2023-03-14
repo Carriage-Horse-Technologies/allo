@@ -11,52 +11,8 @@ use crate::{
         states::{CollisionState, ModalState},
     },
     my_utils::check_collision_with_page_offset_dom_rect,
+    static_data::{NEW_PRODUCT_INFO, PAST_PRODUCT_INFO_LIST},
 };
-
-const PRODUCT_INFO_LIST: [ProductInfo; 7] = [
-    ProductInfo {
-        title: "RED",
-        url: "https://games.jyogi.net/",
-        topaz_url: "https://topaz.dev/projects/0bdca801952a9a59bba7",
-        img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01GDGDQ2DYKE527HP55Z0R008H.png&w=1920&q=75"
-    },
-    ProductInfo {
-        title: "奇声",
-        url: "https://kisei.yukinissie.com/",
-        topaz_url: "https://topaz.dev/projects/4f42624a1a4028f63363",
-        img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01FY73Y30XEE6T5BCAC0JD5JSZ.jpeg&w=2048&q=75"
-    },
-    ProductInfo {
-        title: "デスマTV",
-        url: "https://viewer.deathmatv.online/",
-        topaz_url: "https://topaz.dev/projects/50a804868af6407eb504",
-        img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01G5X2YKFPN5EDNTJB9VGRFT5R.png&w=3840&q=75"
-    },
-    ProductInfo {
-        title: "まさかり",
-        url: "https://masakari.yukinissie.com/",
-        topaz_url: "https://masakari.yukinissie.com/",
-        img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01GDGDQ2DYKE527HP55Z0R008H.png&w=1920&q=75"
-    },
-    ProductInfo {
-        title: "Bears Sandbag",
-        url: "https://bears-sandbag.yukinissie.com/",
-        topaz_url: "https://topaz.dev/projects/207c286d525ad968e969",
-        img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01FAA15EKREPQ82JT53QQ5YGEW.png&w=3840&q=75"
-    },
-    ProductInfo {
-        title: "Meguru Cosmos",
-        url: "https://lonely1.yukinissie.com/",
-        topaz_url: "https://topaz.dev/projects/d41a0662268f7a1aca4a",
-        img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01GVESENFPRVRG50GS3WQ6ETQA.png&w=3840&q=75"
-    },
-    ProductInfo {
-        title: "Wa:talk",
-        url: "https://watalk.yukinissie.com/",
-        topaz_url: "https://topaz.dev/projects/b319ba459e32910d7015",
-        img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01GVET9N3Q8P879HEP6V3R680R.png&w=3840&q=75"
-    }
-];
 
 #[derive(PartialEq, Properties)]
 pub(crate) struct ProductListProps {
@@ -96,9 +52,11 @@ pub(crate) fn ProductList(props: &ProductListProps) -> Html {
                             prod_rect.right()
                         );
                         if check_collision_with_page_offset_dom_rect(myself_rect, prod_rect) {
+                            let mut all_product_info_list = PAST_PRODUCT_INFO_LIST.to_vec();
+                            all_product_info_list.push(NEW_PRODUCT_INFO);
                             on_collision_stay = CollisionState {
                                 on_collision_stay: true,
-                                url: PRODUCT_INFO_LIST
+                                url: all_product_info_list
                                     .iter()
                                     .find(|prod_info| prod_info.title == title)
                                     .unwrap()
@@ -117,18 +75,22 @@ pub(crate) fn ProductList(props: &ProductListProps) -> Html {
     }
 
     html! {
-        <div class={classes!("grid", "grid-cols-3", "justify-items-center", "place-content-around", "place-items-center",
-                            )}>
-            {
-                for PRODUCT_INFO_LIST.iter().map(|info| {
-                    html! {
-                        <Product product_info={(*info).clone()} rect_map={products_rect_map.clone()} />
-                    }
-                })
-            }
-            if modal_state.is_display {
-                <Modal />
-            }
+        <div>
+            <Product classes={classes!("container", "mx-auto", "mt-[300px]", "mb-[100px]",
+                            "bg-gradient-to-r", "from-[#6080B0]", "via-[#08DCF9]", "to-[#FF2775]", "p-2"
+                            )} product_info={NEW_PRODUCT_INFO} rect_map={products_rect_map.clone()} new={true} />
+            <div class={classes!("grid", "grid-cols-3", "justify-items-center", "place-content-around", "place-items-center")}>
+                {
+                    for PAST_PRODUCT_INFO_LIST.iter().map(|info| {
+                        html! {
+                            <Product product_info={(*info).clone()} rect_map={products_rect_map.clone()} />
+                        }
+                    })
+                }
+                if modal_state.is_display {
+                    <Modal />
+                }
+            </div>
         </div>
     }
 }

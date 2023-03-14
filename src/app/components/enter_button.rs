@@ -1,3 +1,5 @@
+use wasm_bindgen::{prelude::Closure, JsCast};
+use web_sys::HtmlButtonElement;
 use yew::prelude::*;
 
 use yewdux::prelude::use_store_value;
@@ -15,6 +17,7 @@ pub(crate) fn EnterButton(props: &EnterButtonProps) -> Html {
     let EnterButtonProps { href, disabled } = props;
 
     let collision_state = use_store_value::<CollisionState>();
+    let button_node = use_node_ref();
 
     let onclick = {
         let href = href.clone().unwrap_or_default();
@@ -33,8 +36,45 @@ pub(crate) fn EnterButton(props: &EnterButtonProps) -> Html {
         })
     };
 
+    {
+        // Enterキーでonclick発火
+        let button_node = button_node.clone();
+        use_effect_with_deps(
+            move |button_node| {
+                let button_node = button_node.clone();
+                let document = web_sys::window().unwrap().document().unwrap();
+
+                let keydown_listener = Closure::<dyn Fn(KeyboardEvent)>::wrap(Box::new({
+                    move |e| {
+                        if e.code() == "Enter" || e.code() == "NumpadEnter" {
+                            let button_element = button_node
+                                .cast::<HtmlButtonElement>()
+                                .expect("Failed to cast HtmlButtonElement");
+                            let event = Event::new("click").expect("Failed to new Event");
+                            button_element.dispatch_event(&event).unwrap();
+                        }
+                    }
+                }));
+
+                let register_listener = move || {
+                    document
+                        .add_event_listener_with_callback(
+                            "keydown",
+                            keydown_listener.as_ref().unchecked_ref(),
+                        )
+                        .unwrap();
+                };
+
+                register_listener();
+
+                register_listener
+            },
+            button_node,
+        );
+    }
+
     html! {
-        <button type="button" onclick={onclick}
+        <button ref={button_node} type="button" onclick={onclick}
             disabled={!collision_state.on_collision_stay}
             class="fixed flex flex-row items-center z-[901]
             w-[256px] h-[64px] bottom-[50px] left-1/2 -translate-x-1/2
