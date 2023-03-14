@@ -7,10 +7,9 @@ pub struct HeaderProps {}
 pub fn Header(props: &HeaderProps) -> Html {
     let HeaderProps {} = props;
     html! {
-        <header class="fixed w-screen mx-auto p-5 text-6xl text-center text-dark-primary font-bold
-            select-none
-            text-transparent bg-clip-text bg-gradient-to-r from-green-600 via-yellow-400 to-pink-600
-            dark:bg-opacity-0 z-[890]">
+        <header class="fixed w-screen mx-auto p-5 text-6xl text-center text-dark-text font-bold
+            select-none dark:bg-dark-primary
+            dark:bg-opacity-100 z-[890]">
             {"ハッカソン成果物展示場"}
         </header>
     }
