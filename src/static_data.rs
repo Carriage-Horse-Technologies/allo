@@ -7,7 +7,7 @@ pub(crate) const NEW_PRODUCT_INFO: ProductInfo = ProductInfo {
     img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01GVG1E3KT3382HEYQHD7WA0R5.gif&w=3840&q=75"
 };
 
-pub(crate) const PAST_PRODUCT_INFO_LIST: [ProductInfo; 6] = [
+pub(crate) const PAST_PRODUCT_INFO_LIST: [ProductInfo; 8] = [
     ProductInfo {
         title: "RED",
         url: "https://games.jyogi.net/",
@@ -27,6 +27,12 @@ pub(crate) const PAST_PRODUCT_INFO_LIST: [ProductInfo; 6] = [
         img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01FY73Y30XEE6T5BCAC0JD5JSZ.jpeg&w=2048&q=75"
     },
     ProductInfo {
+        title: "Crowd4U",
+        url: "https://crowd4u.org/ja/",
+        topaz_url: "https://crowd4u.org/ja/",
+        img_src: "https://fusioncomplab.org/images/slideshow/01.jpg",
+    },
+    ProductInfo {
         title: "Bears Sandbag",
         url: "https://bears-sandbag.yukinissie.com/",
         topaz_url: "https://topaz.dev/projects/207c286d525ad968e969",
@@ -44,4 +50,10 @@ pub(crate) const PAST_PRODUCT_INFO_LIST: [ProductInfo; 6] = [
         topaz_url: "https://topaz.dev/projects/d41a0662268f7a1aca4a",
         img_src: "https://topaz.dev/_next/image?url=https%3A%2F%2Fptera-publish.topaz.dev%2Fproject%2F01GVESENFPRVRG50GS3WQ6ETQA.png&w=3840&q=75"
     },
+    ProductInfo {
+        title: "融合知能デザイン研究室 エンジニアブログ",
+        url: "https://crowd4u.github.io/",
+        topaz_url: "https://crowd4u.github.io/",
+        img_src: "https://fusioncomplab.org/images/slideshow/01.jpg",
+    }
 ];

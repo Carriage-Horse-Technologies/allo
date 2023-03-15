@@ -5,14 +5,16 @@ use yewdux::prelude::{use_store, use_store_value};
 use crate::{
     app::{
         components::{
-            chat_text_field::ChatTextField, easter_egg_modals::EasterEggModal,
-            enter_button::EnterButton, entrance_back_button::EntranceBackButton,
-            first_visit_modals::FirstVisitModal, modals::Modal, myself::Myself,
-            other_character::OtherCharacter, product_list::ProductList,
+            bbs_modals::BBSModal, chat_text_field::ChatTextField,
+            easter_egg_modals::EasterEggModal, enter_button::EnterButton,
+            entrance_back_button::EntranceBackButton, first_visit_modals::FirstVisitModal,
+            modals::Modal, myself::Myself, other_character::OtherCharacter,
+            product_list::ProductList,
         },
         models::{Character, CharacterLocations, ChatMessage, LocationType, PageOffsetDomRect},
         states::{
-            ChatTextHashState, ChatTextState, EasterEggModalState, FirstVisitState, Username,
+            BBSModalState, ChatTextHashState, ChatTextState, EasterEggModalState, FirstVisitState,
+            Username,
         },
     },
     settings::{self, CONFIG, WORLD_SIZE, WORLD_SIZE_CLASS_H, WORLD_SIZE_CLASS_W},
@@ -33,6 +35,7 @@ pub fn Home(props: &HomeProps) -> Html {
     let myself_rect = use_state(|| Option::<PageOffsetDomRect>::None);
 
     let easter_egg_modal_state = use_store_value::<EasterEggModalState>();
+    let bbs_modal_state = use_store_value::<BBSModalState>();
 
     // WebSocket設定
     let ws = {
@@ -140,6 +143,9 @@ pub fn Home(props: &HomeProps) -> Html {
             // }
             if easter_egg_modal_state.0 {
                 <EasterEggModal />
+            }
+            if bbs_modal_state.0 {
+                <BBSModal />
             }
         </div>
     }

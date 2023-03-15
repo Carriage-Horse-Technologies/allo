@@ -7,7 +7,7 @@ use yewdux::prelude::use_store;
 
 use crate::{
     app::{
-        components::{modals::Modal, product::Product, stage::Stage},
+        components::{bulletin_board_system::BBS, modals::Modal, product::Product, stage::Stage},
         models::{PageOffsetDomRect, ProductInfo},
         states::{CollisionState, ModalState},
     },
@@ -103,6 +103,7 @@ pub(crate) fn ProductList(props: &ProductListProps) -> Html {
                                 "z-[600]"
                                 )} product_info={NEW_PRODUCT_INFO} rect_map={products_rect_map.clone()} new={true} />
                     <Stage classes={classes!("absolute", "z-[500]")} />
+                    <BBS classes={classes!("absolute", "z-[601]", "right-[0px]", "bottom-[360px]")} />
                 </div>
                 <img class={classes!("object-contain")} src="https://objectstorage.ap-tokyo-1.oraclecloud.com/n/nr7eduszgfzb/b/image-bucket/o/allo%2Fcracker.gif" alt="" />
             </div>
@@ -119,14 +120,18 @@ pub(crate) fn ProductList(props: &ProductListProps) -> Html {
                         <Product product_info={(PAST_PRODUCT_INFO_LIST[1]).clone()} rect_map={products_rect_map.clone()} />
                         <div class={classes!("bg-rainbow-load-bg-img", "bg-repeat", "w-[64px]", "self-stretch", "select_none")} >{"."}</div>
                         <Product product_info={(PAST_PRODUCT_INFO_LIST[2]).clone()} rect_map={products_rect_map.clone()} />
+                        <div class={classes!("bg-rainbow-load-bg-img", "bg-repeat", "w-[64px]", "self-stretch", "select_none")} >{"."}</div>
+                        <Product product_info={(PAST_PRODUCT_INFO_LIST[3]).clone()} rect_map={products_rect_map.clone()} />
                     </div>
                     <div class={classes!("bg-rainbow-load-bg-img", "bg-repeat", "h-[64px]", "self-stretch", "select_none")} >{"."}</div>
                     <div class={classes!("flex", "flex-row", "justify-items-center", "items-center")}>
-                        <Product product_info={(PAST_PRODUCT_INFO_LIST[3]).clone()} rect_map={products_rect_map.clone()} />
-                        <div class={classes!("bg-rainbow-load-bg-img", "bg-repeat", "w-[64px]", "self-stretch", "select_none")} >{"."}</div>
                         <Product product_info={(PAST_PRODUCT_INFO_LIST[4]).clone()} rect_map={products_rect_map.clone()} />
                         <div class={classes!("bg-rainbow-load-bg-img", "bg-repeat", "w-[64px]", "self-stretch", "select_none")} >{"."}</div>
                         <Product product_info={(PAST_PRODUCT_INFO_LIST[5]).clone()} rect_map={products_rect_map.clone()} />
+                        <div class={classes!("bg-rainbow-load-bg-img", "bg-repeat", "w-[64px]", "self-stretch", "select_none")} >{"."}</div>
+                        <Product product_info={(PAST_PRODUCT_INFO_LIST[6]).clone()} rect_map={products_rect_map.clone()} />
+                        <div class={classes!("bg-rainbow-load-bg-img", "bg-repeat", "w-[64px]", "self-stretch", "select_none")} >{"."}</div>
+                        <Product product_info={(PAST_PRODUCT_INFO_LIST[7]).clone()} rect_map={products_rect_map.clone()} />
                     </div>
                     // <div class={classes!("container", "mx-auto", "flex", "flex-row", "justify-items-center", "items-center", "self-stretch")}>
                     //     <div class={classes!("bg-rainbow-load-bg-img", "bg-repeat", "h-[64px]", "self-stretch", "select_none")} >{"."}</div>
