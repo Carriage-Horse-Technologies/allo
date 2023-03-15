@@ -5,6 +5,8 @@ use web_sys::HtmlElement;
 use yew::NodeRef;
 
 pub(crate) mod balloon;
+pub(crate) mod bbs_modals;
+pub(crate) mod bulletin_board_system;
 pub(crate) mod chat_text_field;
 pub(crate) mod easter_egg_modals;
 pub(crate) mod enter_button;
