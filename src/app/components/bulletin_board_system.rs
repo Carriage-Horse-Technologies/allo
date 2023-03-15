@@ -22,7 +22,7 @@ pub fn BBS(props: &BBSProps) -> Html {
 
     html! {
         <button type="button" onclick={onclick} class={classes!(classes)}>
-            <img src="/public/draw-io.png" width="64" height="64" alt="draw-io" />
+            <img src="https://dx-lord.com/wp-content/uploads/2021/05/draw-io.png" width="64" height="64" alt="draw-io" />
         </button>
     }
 }
